@@ -6,6 +6,6 @@ Der Index in diesem Repository (OCR-Text, Gliederung in Haushalte, abgeleitete S
 
 The index in this repository (OCR text, division into households, derived structure and corrections) is available under **CC BY-NC 4.0**: https://creativecommons.org/licenses/by-nc/4.0/
 
-Naamsvermelding · Namensnennung · Attribution: *Status Animarum Münster 1749/50, Gerrit Jan [achternaam], [jaar], https://[gebruikersnaam].github.io/status-animarum-1749/ — bron: Bistumsarchiv Münster, via Matricula Online.*
+Naamsvermelding · Namensnennung · Attribution: *Status Animarum Münster 1749/50, Gerrit Jan [achternaam], [jaar], https://gerritjan-bit.github.io/status-animarum-1749/ — bron: Bistumsarchiv Münster, via Matricula Online.*
 
 Deze licentie geldt niet voor de scans. Die zijn van het Bistumsarchiv Münster en staan op Matricula Online onder CC BY-NC-ND 2.0.

@@ -1,10 +1,10 @@
 # Status Animarum Münster 1749/50
 
-**NL** · Doorzoekbare index van de getypte afschriften (Abschriften) van de Status Animarum van het Prinsbisdom Münster, 1749–1751: 106 parochies, 1.902 scans. De site staat op **https://[gebruikersnaam].github.io/status-animarum-1749/** *(in opbouw)*.
+**NL** · Doorzoekbare index van de getypte afschriften (Abschriften) van de Status Animarum van het Prinsbisdom Münster, 1749–1751: 106 parochies, 1.902 scans. De site staat op **https://gerritjan-bit.github.io/status-animarum-1749/** *(in opbouw)*.
 
-**DE** · Durchsuchbarer Index der maschinengeschriebenen Abschriften des Status Animarum des Fürstbistums Münster, 1749–1751: 106 Kirchspiele, 1.902 Scans. Die Website: **https://[gebruikersnaam].github.io/status-animarum-1749/** *(im Aufbau)*.
+**DE** · Durchsuchbarer Index der maschinengeschriebenen Abschriften des Status Animarum des Fürstbistums Münster, 1749–1751: 106 Kirchspiele, 1.902 Scans. Die Website: **https://gerritjan-bit.github.io/status-animarum-1749/** *(im Aufbau)*.
 
-**EN** · Searchable index of the typed transcripts (Abschriften) of the Status Animarum of the Prince-Bishopric of Münster, 1749–1751: 106 parishes, 1,902 scans. The site: **https://[gebruikersnaam].github.io/status-animarum-1749/** *(under construction)*.
+**EN** · Searchable index of the typed transcripts (Abschriften) of the Status Animarum of the Prince-Bishopric of Münster, 1749–1751: 106 parishes, 1,902 scans. The site: **https://gerritjan-bit.github.io/status-animarum-1749/** *(under construction)*.
 
 ## Bron · Quelle · Source
 
