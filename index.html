@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status Animarum Münster 1749/50</title>
+<meta name="description" content="Zoek op naam en geboortejaar in de Status Animarum van het Prinsbisdom Münster (1749/50): 106 parochies, met links naar de scans op Matricula. In opbouw.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Literata:opsz,wght@7..72,400;7..72,600&display=swap" rel="stylesheet">
+<style>
+  :root {
+    color-scheme: light;
+    --papier: #eef1ee;
+    --inkt: #1e2631;
+    --doordruk: #5b6672;
+    --lint: #a3342c;
+    --lijn: #c9cfcb;
+  }
+  @media (prefers-color-scheme: dark) {
+    :root {
+      color-scheme: dark;
+      --papier: #14181d;
+      --inkt: #e4e7e2;
+      --doordruk: #9aa3ac;
+      --lint: #d06a5f;
+      --lijn: #2c333b;
+    }
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    background: var(--papier);
+    color: var(--inkt);
+    font: 400 1.0625rem/1.65 "Literata", Georgia, "Times New Roman", serif;
+  }
+  main { max-width: 38rem; margin: 0 auto; padding: 4.5rem 1.5rem 4rem; }
+  h1 {
+    font: 700 clamp(1.9rem, 6vw, 2.75rem)/1.15 "Courier Prime", "Courier New", monospace;
+    margin: 0 0 2.75rem;
+    letter-spacing: -0.01em;
+  }
+  /* zoals de onderstreepte achternamen in de typoscripten */
+  h1 span {
+    text-decoration: underline;
+    text-decoration-color: var(--lint);
+    text-decoration-thickness: 0.09em;
+    text-underline-offset: 0.18em;
+  }
+  section { padding: 1.25rem 0; border-top: 1px solid var(--lijn); }
+  section:last-of-type { border-bottom: 1px solid var(--lijn); }
+  h2 { font: 600 1.0625rem/1.4 "Literata", Georgia, serif; margin: 0 0 0.35rem; }
+  p { margin: 0; color: var(--doordruk); }
+  a { color: var(--inkt); text-decoration-color: var(--lint); text-underline-offset: 0.15em; }
+  a:focus-visible { outline: 2px solid var(--lint); outline-offset: 3px; }
+  footer { margin-top: 2.5rem; font-size: 0.9rem; color: var(--doordruk); }
+</style>
+</head>
+<body>
+<main>
+  <h1><span>Status Animarum</span><br>Münster 1749/50</h1>
+
+  <section lang="nl">
+    <h2>Doorzoek de zielenregisters van het Prinsbisdom Münster</h2>
+    <p>Deze site is in opbouw. Binnenkort kun je hier zoeken in de getypte afschriften van 106 parochies, op naam en op geschat geboortejaar.</p>
+  </section>
+
+  <section lang="de">
+    <h2>Die Seelenregister des Fürstbistums Münster durchsuchen</h2>
+    <p>Diese Website ist im Aufbau. Bald können Sie hier die maschinengeschriebenen Abschriften von 106 Kirchspielen nach Namen und geschätztem Geburtsjahr durchsuchen.</p>
+  </section>
+
+  <section lang="en">
+    <h2>Search the 1749/50 census of souls of the Prince-Bishopric of Münster</h2>
+    <p>This site is under construction. Soon you will be able to search the typed transcripts of 106 parishes by name and estimated year of birth.</p>
+  </section>
+
+  <footer>
+    Bron · Quelle · Source: Bistumsarchiv Münster, via <a href="https://data.matricula-online.eu/">Matricula Online</a>.
+  </footer>
+</main>
+</body>
+</html>
