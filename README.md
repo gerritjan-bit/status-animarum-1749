@@ -30,4 +30,4 @@ Hoe de tekst is bewerkt en hoe betrouwbaar dat is, staat op de pagina *Werkwijze
 - De index zelf (tekst, indeling, correcties): CC BY-NC 4.0, zie [`LICENSE-DATA.md`](LICENSE-DATA.md).
 - De scans vallen hier niet onder; daarvoor gelden de voorwaarden van Matricula Online.
 
-Gemaakt door Gerrit Jan [achternaam], met hulp van Claude (Anthropic).
+Gemaakt door Gerrit Jan Lutkehaus, met hulp van Claude (Anthropic).
