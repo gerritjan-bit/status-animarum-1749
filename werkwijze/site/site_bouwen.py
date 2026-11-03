@@ -125,6 +125,8 @@ STAP_VERTALING = {
               "An zwei von Hand abgeschriebenen Seiten: Sendenhorst AS_019 von 80 % auf 87 % richtige Wörter, Ahaus AS_001 von 92 % auf 94 %. Bei einer Zufallsprüfung von 70 Namensregel-Korrekturen fast alle richtig; von 70 Ein-Zeichen-Korrekturen etwa jede siebte zweifelhaft oder falsch (z. B. ‚GroBe‘ → ‚Grote‘ statt ‚Große‘). Auch Schreibweisen der Abschrift selbst können ‚verbessert‘ werden (‚Hennricus‘ → ‚Henricus‘)."),
        "en": ("OCR correction", "Automatic correction in three layers; the original OCR is always kept. (1) Name rules: systematic errors at the start of common names, mostly caused by capital letters typed slightly raised ('laria' → 'Maria', 'Pernardus' → 'Bernardus', 'enricus' → 'Henricus'); see the table below. (2) One character: a rare word is replaced by a much more frequent one if the difference is a known OCR confusion; e↔a deliberately excluded because of genuine variants (Anne/Anna). (3) Stray characters (|, », ^) removed and digit errors fixed (4C → 40, ll → 11).",
               "On two pages transcribed by hand: Sendenhorst AS_019 from 80% to 87% correct words, Ahaus AS_001 from 92% to 94%. In a random check of 70 name-rule corrections almost all were right; of 70 one-character corrections about one in seven was doubtful or wrong (e.g. 'GroBe' → 'Grote' where 'Große' was meant). Spellings of the typist can also be 'corrected' ('Hennricus' → 'Henricus').")},
+ "4": {"de": ("Vorschläge von Nutzern", "Verbesserungen, die Besucher über das Formular eingesandt haben, aus dem öffentlichen Tabellenblatt geholt. Sie werden neben dem Text als Nutzervorschlag angezeigt und sind nicht geprüft; der ursprüngliche OCR-Text und die automatische Korrektur bleiben unverändert. Je Haushalt gilt der neueste Vorschlag.", None),
+       "en": ("Suggestions by users", "Corrections sent in by visitors through the form, taken from the public tab of the Google Sheet. They are shown next to the text as a user suggestion and have not been checked; the original OCR and the automatic correction stay unchanged. For each household the newest suggestion applies.", None)},
  "3": {"de": ("Spalten-OCR der Listenbände", "Bände mit einer Person je Zeile wurden spaltenweise neu gelesen: Die Spalten werden an senkrechtem Weißraum erkannt, jede Spalte wird einzeln gelesen und die Zeilen werden nach ihrer Höhe auf der Seite wieder zusammengesetzt. Die Spalte mit dem meisten Text ist der Name, links davon die Stellung, die erste Spalte rechts mit überwiegend Zahlen das Alter, der Rest Bemerkungen. Zwei Listen nebeneinander (oder eine Doppelseite) werden als zwei Blöcke gelesen. Ein Haushalt beginnt bei einer Leerzeile oder bei einer Stellung, die kein Familienmitglied und kein Gesinde ist (Beruf, Einwohner, colonus, …).",
               "Getestet an 8 Stichprobenseiten verschiedener Listenbände; Spalten bei 7 richtig erkannt (Lüdinghausen Seite 4 ist anders aufgebaut). Auf einer von Hand abgeschriebenen Seite aus Sendenhorst (AS_019): 150 von 183 Wörtern in Namens- und Altersspalte richtig, und die Stellungsspalte (Ehefrau, Kinder, …) großenteils lesbar, die bei normaler OCR unbrauchbar war."),
        "en": ("Column OCR of the list volumes", "Volumes with one person per line were re-read column by column: columns are found from vertical white space, each column is read separately, and the lines are reassembled by their height on the page. The column with the most text is the name, to its left the position in the household, the first column to the right with mostly numbers the age, the rest remarks. Two lists side by side (or a double page) are read as two blocks. A household starts at a blank line or at a position that is not a family member or servant (occupation, Einwohner, colonus, …).",
@@ -145,6 +147,8 @@ AANTAL_LABEL = {
  "naamregel": ("naamregels toegepast", "Namensregeln angewendet", "name rules applied"), "één teken": ("correcties van één teken", "Ein-Zeichen-Korrekturen", "one-character corrections"),
  "cijfer": ("cijferfouten hersteld", "Ziffernfehler behoben", "digit errors fixed"), "rommelteken": ("rommeltekens verwijderd", "Störzeichen entfernt", "stray characters removed"),
  "paginas_kolom_ocr": ("pagina's per kolom gelezen", "Seiten spaltenweise gelesen", "pages read by column"),
+ "voorstellen": ("voorstellen", "Vorschläge", "suggestions"), "huishoudens_met_voorstel": ("huishoudens met een voorstel", "Haushalte mit Vorschlag", "households with a suggestion"),
+ "bron": ("bron", "Quelle", "source"),
 }
 
 def e(s):
@@ -202,6 +206,15 @@ def lees_db(pad, alleen=None):
                                                 "ORDER BY huishouden_id, volgnr"):
         if hid in hh_ids:
             b, i = hh_ids[hid]; per_boek[b][i][5].append([rel, tekst, lft, geb])
+    if db.execute("SELECT name FROM sqlite_master WHERE name='gebruikerscorrecties'").fetchone():
+        laatste = {}
+        for sleutel, tekst in db.execute("SELECT sleutel, tekst FROM gebruikerscorrecties ORDER BY volgnr"):
+            laatste[sleutel] = tekst                       # nieuwste (onderaan in de Sheet) wint
+        for b, lijst in per_boek.items():
+            for h in lijst:
+                v = laatste.get(h[0])
+                if v and v.strip() not in (h[2].strip(), h[3].strip()):
+                    h.append(v.strip())
     bewerkingen = db.execute("SELECT stap, versie, beschrijving, aantallen, meting, datum FROM bewerkingen "
                              "WHERE id IN (SELECT MAX(id) FROM bewerkingen GROUP BY stap) ORDER BY stap").fetchall() \
         if db.execute("SELECT name FROM sqlite_master WHERE name='bewerkingen'").fetchone() else []
@@ -216,7 +229,7 @@ def maak_index(boeken, per_boek):
         for i, h in enumerate(per_boek[b["id"]]):
             n = len(h_ref); h_ref.append([k, i])
             geb.append(sorted({p[3] for p in h[5] if p[3] is not None}))
-            for w in set(re.findall(r"[^\W\d_]{2,}", (h[2] + " " + h[3]).lower())):
+            for w in set(re.findall(r"[^\W\d_]{2,}", (h[2] + " " + h[3] + " " + (h[7] if len(h) > 7 else "")).lower())):
                 if w not in woorden:
                     woorden[w] = len(post); post.append([])
                 post[woorden[w]].append(n)
@@ -269,7 +282,7 @@ def hh_html(h, boek, taal, toon_plaats):
     """Statische weergave voor de parochiepagina's: de tekst staat in de HTML (vindbaar voor
     zoekmachines); personen en oorspronkelijke OCR worden pas geladen als je ze openklapt."""
     U = UI[taal]
-    sleutel, pg, tekst, ocr, corr, pers, reden = h
+    sleutel, pg, tekst, ocr, corr, pers, reden = h[:7]
     cmap = {p: (o, l) for p, o, l in corr}
     toks = []
     for i, tok in enumerate(tekst.split(" ")):
@@ -277,8 +290,9 @@ def hh_html(h, boek, taal, toon_plaats):
         if i in cmap:
             t = f'<u title="{e(U["ocrLas"] + ": " + cmap[i][0] + " (" + LAAG[taal].get(cmap[i][1], cmap[i][1]) + ")")}">{t}</u>'
         toks.append(t)
+    voorstel = f'<div class="voorstel"><span class="label">{e(U["voorstel"])}</span>{e(h[7])}</div>' if len(h) > 7 else ""
     return (f'<article class="hh" id="{e(sleutel)}" data-sleutel="{e(sleutel)}">'
-            f'<p class="hh-tekst">{" ".join(toks)}</p>'
+            f'<p class="hh-tekst">{" ".join(toks)}</p>{voorstel}'
             f'<details data-laad><summary>{e(U["details"])}</summary></details>'
             f'<p class="verbeter klein">{e(sleutel)} · <a class="verbeterlink" href="#" target="_blank" rel="noopener">{e(U["verbeter"])}</a></p></article>\n')
 

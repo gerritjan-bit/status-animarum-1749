@@ -65,7 +65,7 @@
       `<tr><td>${esc(T.rel[rel] || rel)}</td><td>${esc(naam || "–")}</td><td class="getal">${lft == null ? "" : lft}</td><td class="getal">${geb == null ? "" : geb}</td></tr>`).join("");
     return `<article class="hh" id="${esc(sleutel)}" data-sleutel="${esc(sleutel)}">
 <div class="hh-kop"><span class="plaats"><a href="${SA.basis}${SA.taal}/p/${esc(boek.id)}.html#${esc(sleutel)}">${esc(boek.plaats)}</a></span><a href="${esc(boek.url)}?pg=${pg}" target="_blank" rel="noopener">${esc(T.scan)} ${esc(label)}</a><span>${esc(sleutel)}</span></div>
-<p class="hh-tekst">${tekstHTML(tekst, corr, termen)}</p>
+<p class="hh-tekst">${tekstHTML(tekst, corr, termen)}</p>${h[7] ? `<div class="voorstel"><span class="label">${esc(T.voorstel)}</span>${tekstHTML(h[7], [], termen)}</div>` : ""}
 <details><summary>${esc(T.details)}</summary>
 ${detailsHTML(h)}
 </details>
@@ -116,13 +116,13 @@ ${detailsHTML(h)}
     laadVoorstellen().then(v => {
       wortel.querySelectorAll("[data-sleutel]").forEach(el => {
         const s = el.dataset.sleutel, vs = v[s];
-        if (!vs || el.querySelector(".voorstel")) return;
+        if (!vs) return;
         const huidige = el.querySelector(".hh-tekst").textContent.trim();
         if (vs.tekst === huidige) return;
-        const d = document.createElement("div");
-        d.className = "voorstel";
+        let d = el.querySelector(".voorstel");          // al ingebouwd bij het bouwen? dan alleen bijwerken
+        if (d && d.textContent.endsWith(vs.tekst)) return;
+        if (!d) { d = document.createElement("div"); d.className = "voorstel"; el.querySelector(".hh-tekst").after(d); }
         d.innerHTML = `<span class="label">${esc(T.voorstel)}</span>${esc(vs.tekst)}`;
-        el.querySelector(".hh-tekst").after(d);
       });
     });
   }
