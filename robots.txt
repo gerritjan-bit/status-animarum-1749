@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /
+Sitemap: https://gerritjan-bit.github.io/status-animarum-1749/sitemap.xml

@@ -1,0 +1,114 @@
+/* Status Animarum Münster 1749/50 — huisstijl
+   Papier en inkt van een typoscript; het rood van het lint alleen voor
+   onderstrepingen, zoals de onderstreepte achternamen in de afschriften. */
+:root {
+  color-scheme: light;
+  --papier: #eef1ee;
+  --vlak: #f7f8f6;
+  --inkt: #1e2631;
+  --doordruk: #5b6672;
+  --lint: #a3342c;
+  --lijn: #c9cfcb;
+  --markeer: #f1e3a4;
+  --voorstel: #e3ecf4;
+  --typ: "Courier Prime", "Courier New", monospace;
+  --lees: "Literata", Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    color-scheme: dark;
+    --papier: #14181d;
+    --vlak: #1b2027;
+    --inkt: #e4e7e2;
+    --doordruk: #9aa3ac;
+    --lint: #d06a5f;
+    --lijn: #2c333b;
+    --markeer: #5b4d17;
+    --voorstel: #1f3042;
+  }
+}
+* { box-sizing: border-box; }
+input, select { accent-color: var(--lint); }
+html { -webkit-text-size-adjust: 100%; }
+body {
+  margin: 0; background: var(--papier); color: var(--inkt);
+  font: 400 1.0625rem/1.65 var(--lees);
+}
+a { color: var(--inkt); text-decoration-color: var(--lint); text-underline-offset: .15em; }
+a:hover { text-decoration-thickness: 2px; }
+:focus-visible { outline: 2px solid var(--lint); outline-offset: 3px; }
+
+/* kop */
+.kop { border-bottom: 1px solid var(--lijn); }
+.kop-binnen {
+  max-width: 60rem; margin: 0 auto; padding: 1.1rem 1.5rem;
+  display: flex; flex-wrap: wrap; align-items: baseline; gap: .6rem 2rem; justify-content: space-between;
+}
+.merk { font: 700 1.25rem/1.2 var(--typ); text-decoration: none; }
+.merk span { text-decoration: underline; text-decoration-color: var(--lint); text-decoration-thickness: .09em; text-underline-offset: .18em; }
+nav ul { list-style: none; margin: 0; padding: 0; display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; }
+nav a { text-decoration: none; }
+nav a[aria-current="page"] { text-decoration: underline; text-decoration-color: var(--lint); }
+.talen { display: flex; gap: .75rem; font: 400 .9rem/1 var(--typ); }
+.talen a { text-decoration: none; color: var(--doordruk); }
+.talen a[aria-current="true"] { color: var(--inkt); text-decoration: underline; text-decoration-color: var(--lint); }
+
+main { max-width: 60rem; margin: 0 auto; padding: 2.5rem 1.5rem 4rem; }
+.tekst { max-width: 40rem; }
+h1 { font: 700 clamp(1.8rem, 5vw, 2.6rem)/1.15 var(--typ); margin: 0 0 .4rem; letter-spacing: -.01em; }
+h1 .ond { text-decoration: underline; text-decoration-color: var(--lint); text-decoration-thickness: .09em; text-underline-offset: .18em; }
+.ondertitel { margin: 0 0 1.75rem; font-style: italic; color: var(--doordruk); }
+h2 { font: 600 1.2rem/1.35 var(--lees); margin: 2.25rem 0 .6rem; }
+h3 { font: 600 1.05rem/1.4 var(--lees); margin: 1.75rem 0 .4rem; }
+.tekst p, .tekst li { max-width: 40rem; }
+.tekst li { margin-bottom: .45rem; }
+.klein { font-size: .9rem; color: var(--doordruk); }
+
+/* zoekvak */
+.zoek { margin: 1.5rem 0 1rem; padding: 1.25rem; background: var(--vlak); border: 1px solid var(--lijn); }
+.zoekregel { display: flex; gap: .5rem; }
+.zoekregel input[type=search] {
+  flex: 1; min-width: 0; font: 400 1.15rem/1.3 var(--typ); padding: .65rem .75rem;
+  border: 1px solid var(--doordruk); background: var(--papier); color: var(--inkt); border-radius: 2px;
+}
+button, .knop {
+  font: 600 1rem/1 var(--lees); padding: .7rem 1.1rem; border: 1px solid var(--inkt);
+  background: var(--inkt); color: var(--papier); border-radius: 2px; cursor: pointer;
+}
+.opties { display: flex; flex-wrap: wrap; gap: .75rem 1.75rem; margin-top: 1rem; font-size: .95rem; align-items: center; }
+.opties label { display: inline-flex; gap: .4rem; align-items: center; }
+.opties input[type=number] { width: 5.2rem; font: inherit; padding: .25rem .4rem; background: var(--papier); color: var(--inkt); border: 1px solid var(--lijn); }
+.opties select { font: inherit; padding: .25rem .4rem; background: var(--papier); color: var(--inkt); border: 1px solid var(--lijn); max-width: 16rem; }
+.status { margin: 1rem 0; color: var(--doordruk); min-height: 1.5em; }
+
+/* huishoudens */
+.hh { padding: .9rem 0 .8rem; border-top: 1px solid var(--lijn); }
+.hh .verbeter { margin: .35rem 0 0; }
+.geb { display: inline-flex; gap: .4rem; align-items: center; }
+.hh-kop { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; font-size: .9rem; color: var(--doordruk); margin-bottom: .35rem; }
+.hh-kop .plaats { color: var(--inkt); font-weight: 600; }
+.hh-tekst { margin: 0; font: 400 1rem/1.6 var(--typ); }
+.hh-tekst u { text-decoration-style: dotted; text-decoration-color: var(--doordruk); cursor: help; }
+.hh-tekst mark, .voorstel mark { background: var(--markeer); color: inherit; padding: 0 .05em; }
+.voorstel { margin: .6rem 0 0; padding: .55rem .75rem; background: var(--voorstel); font: 400 .98rem/1.55 var(--typ); }
+.voorstel .label { display: block; font: 600 .85rem/1.4 var(--lees); margin-bottom: .2rem; }
+details { margin-top: .5rem; font-size: .92rem; }
+summary { cursor: pointer; color: var(--doordruk); }
+.ocr { font: 400 .92rem/1.55 var(--typ); color: var(--doordruk); margin: .4rem 0; }
+table { border-collapse: collapse; width: 100%; font-size: .92rem; }
+th, td { text-align: left; padding: .3rem .6rem .3rem 0; border-bottom: 1px solid var(--lijn); vertical-align: top; }
+th { font-weight: 600; }
+td.getal, th.getal { text-align: right; font-variant-numeric: tabular-nums; }
+.tabel { overflow-x: auto; }
+.verbeter { font-size: .9rem; }
+.scankop { font: 700 1rem/1.4 var(--typ); margin: 2.25rem 0 .25rem; }
+.meer { margin-top: 1rem; }
+footer.voet { border-top: 1px solid var(--lijn); }
+footer.voet div { max-width: 60rem; margin: 0 auto; padding: 1.25rem 1.5rem 2rem; font-size: .9rem; color: var(--doordruk); }
+@media (max-width: 34rem) {
+  .zoekregel { flex-direction: column; }
+  .kop-binnen { gap: .5rem 1rem; }
+  nav ul { gap: .15rem 1rem; font-size: .95rem; }
+  main { padding-top: 1.5rem; }
+}
+@media (prefers-reduced-motion: reduce) { * { transition: none !important; } }

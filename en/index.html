@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Status Animarum Münster 1749/50 – search the census of souls</title>
+<meta name="description" content="Search the Status Animarum of the Prince-Bishopric of Münster (1749/50) by name and year of birth: 106 parishes, with links to the scans on Matricula.">
+<meta name="robots" content="noindex"><link rel="canonical" href="https://gerritjan-bit.github.io/status-animarum-1749/en/index.html">
+<link rel="alternate" hreflang="nl" href="https://gerritjan-bit.github.io/status-animarum-1749/nl/index.html"><link rel="alternate" hreflang="de" href="https://gerritjan-bit.github.io/status-animarum-1749/de/index.html"><link rel="alternate" hreflang="en" href="https://gerritjan-bit.github.io/status-animarum-1749/en/index.html"><link rel="alternate" hreflang="x-default" href="https://gerritjan-bit.github.io/status-animarum-1749/en/index.html">
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="../assets/stijl.css">
+</head>
+<body>
+<header class="kop"><div class="kop-binnen">
+<a class="merk" href="../en/index.html"><span>Status Animarum</span> Münster 1749/50</a>
+<nav aria-label="Search"><ul><li><a href="../en/index.html" aria-current="page">Search</a></li><li><a href="../en/parochies.html">Parishes</a></li><li><a href="../en/over.html">About this index</a></li><li><a href="../en/werkwijze.html">Method</a></li></ul></nav>
+<div class="talen"><a href="../nl/index.html" lang="nl" hreflang="nl">NL</a><a href="../de/index.html" lang="de" hreflang="de">DE</a><a href="../en/index.html" lang="en" hreflang="en" aria-current="true">EN</a></div>
+</div></header>
+<main>
+<h1><span class="ond">Status Animarum</span> Münster 1749/50</h1>
+<p class="ondertitel">Search the 1749/50 census of souls of the Prince-Bishopric of Münster</p>
+<div class="tekst"><p>Search the typed transcripts of the Status Animarum of the Prince-Bishopric of Münster, 1749–1751: 106 parishes, 1,902 scans, 31,090 households. You can search by name and by estimated year of birth.</p>
+<p>The text was read by a computer and contains errors. Every result links to the scan on Matricula Online. The scan is always the authority.</p></div>
+<form class="zoek" id="zoekform" role="search">
+<div class="zoekregel"><label class="klein" for="q" hidden>Name or word</label>
+<input type="search" id="q" name="q" placeholder="Name or word" autocomplete="off" aria-label="Name or word">
+<button type="submit">Search</button></div>
+<div class="opties">
+<label><input type="radio" name="modus" id="fuzzy" checked> By sound and spelling</label>
+<label><input type="radio" name="modus" id="exact"> Exact</label>
+<label id="drempelvak">Strictness <input type="range" id="drempel" min="60" max="100" value="85"> <span id="drempelwaarde">85</span></label>
+<span class="geb"><label>Born c. from <input type="number" id="gebvan" min="1630" max="1751" inputmode="numeric"></label>
+<label>to <input type="number" id="gebtot" min="1630" max="1751" inputmode="numeric"></label></span>
+<label>Parish <select id="boek"><option value="">All parishes</option></select></label>
+</div>
+</form>
+<noscript><p>Searching needs JavaScript. All households are also listed per parish on the Parishes page.</p></noscript>
+<p class="status" id="status" role="status" aria-live="polite"></p>
+<div id="uitkomst"></div>
+</main>
+<script>window.SA={"taal": "en", "basis": "../", "pagina": "zoeken", "csv": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTUAVPU3T2PtGCL34-_W14rzaQOcZNDNwVcTQqfDTTgLNEA1Oi0jRImmr5BEZ1wGFm2O6wxYyc9lOsF/pub?gid=891391070&single=true&output=csv", "form": {"url": "https://docs.google.com/forms/d/e/1FAIpQLSeDhnPuMdOucA1lrcOqP5-UFvIKwl2-bu_aB4c4PSp03bxOaA/viewform", "sleutel": "entry.1080154027", "tekst": "entry.179589507"}, "ui": {"laden": "Loading the index…", "bezig": "Searching…", "aantal": "{n} households found", "een": "1 household found", "teKort": "Type at least two letters.", "teKortExact": "Type at least three characters.", "meer": "Show more", "scan": "Scan", "details": "People and original OCR", "kolRel": "Relationship", "kolNaam": "Name and description", "kolLft": "Age", "kolGeb": "Born c.", "ocrOrig": "Original OCR", "ocrLas": "OCR read", "grens": "Household starts because of", "verbeter": "Suggest a correction", "voorstel": "Suggestion by a user, not checked", "reden": {"witregel": "blank line", "kort": "short line ending in an age", "begin": "start of the page", "kolom": "next column on the page", "kopwoord": "line starts with '{w}'", "rol": "role '{w}'"}, "laag": {"naamregel": "name rule", "één teken": "one character", "cijfer": "digit"}, "rel": {"hoofd": "head", "huisgenoot (relatie niet vermeld)": "household member (relationship not stated)", "echtgenote": "wife", "echtgenoot": "husband", "zoon": "son", "dochter": "daughter", "kind": "child", "kinderen": "children", "dochters": "daughters", "zoontje": "little son", "dochtertje": "little daughter", "vader": "father", "moeder": "mother", "broer": "brother", "zus": "sister", "grootvader": "grandfather", "grootmoeder": "grandmother", "kleinzoon/neef": "grandson/nephew", "kleindochter/nicht": "granddaughter/niece", "schoonmoeder": "mother-in-law", "schoonvader": "father-in-law", "schoonzoon": "son-in-law", "schoondochter": "daughter-in-law", "stiefzoon": "stepson", "stiefdochter": "stepdaughter", "dienstmeid": "maid", "knecht": "farmhand", "dienstpersoneel": "servant", "koeherder": "cowherd", "herder": "herdsman", "weduwe": "widow", "weduwnaar": "widower", "inwoner": "lodger", "inwoners": "lodgers", "inwoonster": "lodger", "tante": "aunt", "echtpaar": "married couple"}}};</script>
+<script src="../assets/zoek.js" defer></script>
+<footer class="voet"><div>Source: Bistumsarchiv Münster, via Matricula Online. This site contains no scans, only OCR text. <a href="https://github.com/gerritjan-bit/status-animarum-1749">GitHub</a></div></footer>
+</body>
+</html>

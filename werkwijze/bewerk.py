@@ -282,8 +282,9 @@ def ontleed(tekst, refjaar):
             if m and rel is None:
                 rel = RELATIES[m.group(1).lower()]
             elif rel is None and j == 0 and len(t.strip(".:;,")) >= 5 and (
-                    k := difflib.get_close_matches(t.strip(".:;,").lower(),
-                                                   [x for x in RELATIES if len(x) >= 5], n=1, cutoff=0.75)):
+                    k := [x for x in difflib.get_close_matches(t.strip(".:;,").lower(),
+                                                   [x for x in RELATIES if len(x) >= 5], n=1, cutoff=0.8)
+                          if abs(len(x) - len(t.strip(".:;,"))) <= 1]):
                 rel = RELATIES[k[0]]                 # OCR-variant van een rolwoord ('Shefrau', 'Kinat')
             elif _LEEFTIJD.match(t):
                 if leeftijd is None:                     # eerste getal = leeftijd; later losse cijfers zijn meestal ruis
