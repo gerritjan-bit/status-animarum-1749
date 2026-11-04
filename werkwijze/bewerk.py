@@ -412,8 +412,10 @@ def bewerk(pad, log=print, meting_sweep=None, meting_split=None):
          "die duidelijk korter is dan de volle regelbreedte en op een leeftijd eindigt (de typemachine geeft elke "
          "letter even veel ruimte, dus regellengte = breedte), of als de volgende regel begint met een woord dat "
          "een huishouden opent (colonus, vidua, Kötter, incolae, …). Nooit na een regel die op een komma of "
-         "afbreekstreepje eindigt. Folio- en letterkoppen worden overgeslagen. Boeken met één persoon per regel "
-         "worden in deze stap alleen op witregels gesplitst (zie stap 3).",
+         "afbreekstreepje eindigt. Folio- en letterkoppen worden overgeslagen. Voor boeken met één persoon per regel "
+         "(kolom-OCR van stap 3) begint een huishouden bij een witregel of bij een rol die geen gezinslid of personeel "
+         "is (beroep, Einwohner, colonus, vidua …); regels met alleen ruis, bijvoorbeeld van de schaduw van de rug, "
+         "worden eerst weggelaten.",
          json.dumps({"korte_regel_factor": 0.82, "volle_breedte": "85e percentiel van de regellengte op de pagina"}),
          json.dumps({"huishoudens": n_hh, **reden_tel}, ensure_ascii=False), meting_split))
     db.execute("INSERT INTO bewerkingen(datum,stap,versie,beschrijving,instellingen,aantallen,meting) VALUES (?,?,?,?,?,?,?)",
@@ -433,16 +435,82 @@ def bewerk(pad, log=print, meting_sweep=None, meting_split=None):
     return db
 
 # ---------------------------------------------------------------- lijstboeken (stap 3)
-HOOFDROL = re.compile(r"^(?!ehefrau|frau|kinder|kind|kindt|sohn|tochter|vatter|vater|mutter|knecht|knegt|knegte|"
-                      r"magd|mohne|bruder|schwester|ux|uxor|conj|fil|filius|filia|filii|prol|proles|lib|liberi|"
-                      r"anc|ancilla|serv|servus|servi|fam|famul|famula|soror|frater|pater|mater|avia|avus|nepos|neptis|"
-                      r"socrus|socer|gener|nurus|privign|dessen|deren|die|der|et|&|ejus|eius|illorum|prioris|item|ejusdem)", re.I)
+# woorden die een gezinslid, personeel of verwantschap aanduiden: die openen nooit een huishouden
+GEZINSWOORDEN = ["ehefrau", "frau", "kinder", "kind", "kindt", "sohn", "söhne", "tochter", "töchter", "vatter", "vater",
+    "mutter", "knecht", "knegt", "knegte", "magd", "mägde", "mohne", "bruder", "schwester", "dessen", "deren",
+    "uxor", "maritus", "conjux", "conjuges", "filius", "filia", "filii", "filiae", "proles", "liberi", "soror", "sorores",
+    "frater", "fratres", "famulus", "famula", "famuli", "ancilla", "ancillae", "servus", "servi", "serva", "mater", "pater",
+    "socrus", "socer", "nepos", "neptis", "avia", "avus", "gener", "nurus", "privignus", "privigna", "ejus", "eius",
+    "illorum", "prioris", "item", "ejusdem", "pastor", "bubulcus", "opilio"]
+_NAMEN_CACHE = {}
+
+def _opent_huishouden(rol, namen):
+    """Een rol opent een nieuw huishouden als het een echt woord is (beroep, Einwohner, colonus, vidua …)
+    en geen gezinslid, geen voornaam en geen OCR-ruis ('E', '|', 'b E Moa', 'Bhefrau')."""
+    woorden = re.findall(r"[A-Za-zÄÖÜäöüß]+", rol or "")
+    echte = [w for w in woorden if len(w) >= 4 and w[1:].islower()]
+    if not echte:
+        return False
+    for w in woorden:
+        lw = w.lower()
+        if len(lw) >= 3 and difflib.get_close_matches(lw, GEZINSWOORDEN, n=1, cutoff=0.7):
+            return False
+    if any(w in namen for w in echte):
+        return False
+    return True
+
+
+_WOORD3 = re.compile(r"[A-Za-zÄÖÜäöüß]*[a-zäöüß]{2}[A-Za-zÄÖÜäöüß]*")
+
+def _schoon_tokens(t, rol=False):
+    """Ruis uit de rol- en opmerkingkolom halen (schaduw van de rug of de scanrand leest als 'E', '|', 'ONE EE')."""
+    uit = []
+    for tok in (t or "").split():
+        letters = re.sub(r"[^A-Za-zÄÖÜäöüß]", "", tok)
+        if re.fullmatch(r"\(?[fF]\.?|\d+[/.,']?\d*[')]?", tok) or (len(letters) >= 3 and _WOORD3.search(letters)) \
+           or (rol and tok.endswith((".", ":")) and len(letters) >= 2):
+            uit.append(tok)
+    return " ".join(uit)
+
+def _schoon_lijstregels(ruw):
+    """Regels die alleen ruis bevatten weglaten (schaduw van de rug of de scanrand leest als 'E', '|', 'ONE EE').
+    Op pagina's met veel ruis worden de witregels daarna opnieuw bepaald uit de afstand tussen de bovenkanten
+    van de overgebleven regels, omdat ruisregels anders de witruimte tussen huishoudens opvullen."""
+    per_blok = collections.defaultdict(list); weg = 0
+    for r in ruw:
+        regelnr, blok, rol, naam, lft, opm, wit, top = r
+        naam_ok = bool(_WOORD3.search(re.sub(r"[^A-Za-zÄÖÜäöüß ]", " ", naam or "")))
+        rol_ok = any(len(w) >= 4 and w[1:].islower() for w in re.findall(r"[A-Za-zÄÖÜäöüß]+", rol or ""))
+        lft_ok = bool(re.search(r"\d", lft or ""))
+        if naam_ok or rol_ok or lft_ok:
+            per_blok[blok].append([regelnr, blok, _schoon_tokens(rol, True), naam, lft, _schoon_tokens(opm), wit, top])
+        else:
+            weg += 1
+    veel_ruis = weg > 0.15 * max(1, len(ruw))
+    uit = []
+    for blok, rs in per_blok.items():
+        rs.sort(key=lambda r: (r[7] if r[7] is not None else 0, r[0]))
+        if veel_ruis:
+            tops = [r[7] for r in rs if r[7] is not None]
+            stappen = sorted(b - a for a, b in zip(tops, tops[1:]) if b > a)
+            stap = stappen[len(stappen) // 2] if stappen else None
+            for i, r in enumerate(rs):
+                if stap and i > 0 and r[7] is not None and rs[i - 1][7] is not None:
+                    r[6] = 1 if (r[7] - rs[i - 1][7]) > 1.55 * stap else 0
+        uit.extend(tuple(r[:7]) for r in rs)
+    return uit
 
 def lijst_huishoudens(db, b, pg):
     """Huishoudens uit de kolomregels van stap 3: nieuw huishouden bij een witregel boven de regel
     of bij een rol die geen gezinslid of personeel aanduidt (beroep, Einwohner, colonus, …)."""
-    rijen = db.execute("SELECT regelnr, blok, rol, naam, leeftijd, opmerking, witregel_boven FROM lijstregels "
-                       "WHERE boek_id=? AND pg=? ORDER BY blok, regelnr", (b, pg)).fetchall()
+    if "namen" not in _NAMEN_CACHE:        # veelvoorkomende voornamen uit de naamkolom
+        tel = collections.Counter(w for (n,) in db.execute("SELECT naam FROM lijstregels")
+                                  for w in re.findall(r"[A-ZÄÖÜ][a-zäöüß]{2,}", n or ""))
+        _NAMEN_CACHE["namen"] = {w for w, c in tel.items() if c >= 30} - {w.capitalize() for w in GEZINSWOORDEN}
+    namen = _NAMEN_CACHE["namen"]
+    ruw = db.execute("SELECT regelnr, blok, rol, naam, leeftijd, opmerking, witregel_boven, top FROM lijstregels "
+                     "WHERE boek_id=? AND pg=? ORDER BY blok, regelnr", (b, pg)).fetchall()
+    rijen = _schoon_lijstregels(ruw)
     uit, huidig, reden, vorig_blok = [], [], "begin van de pagina", None
     def sluit():
         if huidig:
@@ -461,7 +529,7 @@ def lijst_huishoudens(db, b, pg):
             nieuw = "volgende kolom op de pagina"
         elif wit and huidig:
             nieuw = "witregel"
-        elif rol and HOOFDROL.match(rol.strip(" .:")) and huidig and naam:
+        elif rol and huidig and naam and _opent_huishouden(rol, namen):
             nieuw = f"rol '{rol.strip(' .:')}' opent een huishouden"
         if nieuw:
             sluit(); huidig, reden = [], nieuw
