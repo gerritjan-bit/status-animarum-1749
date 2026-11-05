@@ -20,12 +20,37 @@ CONFIG = {
     "csv_url": "https://docs.google.com/spreadsheets/d/e/2PACX-1vTUAVPU3T2PtGCL34-_W14rzaQOcZNDNwVcTQqfDTTgLNEA1Oi0jRImmr5BEZ1wGFm2O6wxYyc9lOsF/pub?gid=891391070&single=true&output=csv",
     "repo_url": "https://github.com/gerritjan-bit/status-animarum-1749",
     "zoekmachines": True,                 # False = 'noindex' op alle pagina's (proefversie)
+    "ga_id": "",                          # Google Analytics-meet-ID (G-…); leeg = geen statistiek
+    "fonts_lokaal": True,                 # lettertypen op de eigen site zetten i.p.v. bij Google laden
 }
+FONTS_URL = ("https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700"
+             "&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap")
+_FONTS_OK = {"lokaal": False}
+
+def lokale_fonts(uit):
+    """Haalt de lettertypen eenmalig op en zet ze in assets/fonts, zodat bezoekers niets bij Google laden."""
+    import urllib.request
+    ua = {"User-Agent": "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36"}
+    try:
+        css = urllib.request.urlopen(urllib.request.Request(FONTS_URL, headers=ua), timeout=30).read().decode()
+        map_ = os.path.join(uit, "assets", "fonts"); os.makedirs(map_, exist_ok=True)
+        def haal(m):
+            url = m.group(1); naam = url.rsplit("/", 1)[-1]
+            data = urllib.request.urlopen(urllib.request.Request(url, headers=ua), timeout=30).read()
+            open(os.path.join(map_, naam), "wb").write(data)
+            return f"url(fonts/{naam})"
+        css = re.sub(r"url\((https://fonts\.gstatic\.com/[^)]+)\)", haal, css)
+        open(os.path.join(uit, "assets", "fonts.css"), "w").write(css)
+        return True
+    except Exception as ex:
+        print("Lettertypen konden niet lokaal worden gezet; de site gebruikt dan systeemletters.", ex)
+        return False
 TALEN = ["nl", "de", "en"]
 TAALNAAM = {"nl": "Nederlands", "de": "Deutsch", "en": "English"}
 
 UI = {
- "nl": dict(zoeken="Zoeken", parochies="Parochies", over="Over deze index", werkwijze="Werkwijze",
+ "nl": dict(privacy="Privacy en cookies", instellingen="Cookie-instellingen", ga_tekst="Mag deze site met Google Analytics bijhouden hoe hij gebruikt wordt? Dat gebeurt alleen als je dat toestaat.", ga_ja="Toestaan", ga_nee="Weigeren",
+   zoeken="Zoeken", parochies="Parochies", over="Over deze index", werkwijze="Werkwijze",
    ondertitel="Doorzoek de zielenregisters van het Prinsbisdom Münster",
    paginatitel="Status Animarum Münster 1749/50 – zielenregisters doorzoeken",
    beschrijving="Zoek op naam en geboortejaar in de Status Animarum van het Prinsbisdom Münster (1749/50): {n} parochies, met links naar de scans op Matricula.",
@@ -46,7 +71,8 @@ UI = {
    werk_kol=("OCR las", "Verbeterd tot", "Soort fout", "Toegepast"), aantallen="Aantallen", meting="Gemeten", versie="versie",
    voet="Bron: Bistumsarchiv Münster, via Matricula Online. Deze site bevat geen scans, alleen met OCR gelezen tekst.",
    noscript="Voor het zoeken is JavaScript nodig. Alle huishoudens staan ook per parochie op de pagina Parochies."),
- "de": dict(zoeken="Suche", parochies="Kirchspiele", over="Über diesen Index", werkwijze="Arbeitsweise",
+ "de": dict(privacy="Datenschutz und Cookies", instellingen="Cookie-Einstellungen", ga_tekst="Darf diese Website mit Google Analytics erfassen, wie sie genutzt wird? Das geschieht nur mit Ihrer Zustimmung.", ga_ja="Zulassen", ga_nee="Ablehnen",
+   zoeken="Suche", parochies="Kirchspiele", over="Über diesen Index", werkwijze="Arbeitsweise",
    ondertitel="Die Seelenregister des Fürstbistums Münster durchsuchen",
    paginatitel="Status Animarum Münster 1749/50 – Seelenregister durchsuchen",
    beschrijving="Suche nach Namen und Geburtsjahr im Status Animarum des Fürstbistums Münster (1749/50): {n} Kirchspiele, mit Links zu den Scans bei Matricula.",
@@ -67,7 +93,8 @@ UI = {
    werk_kol=("OCR las", "Korrigiert zu", "Art des Fehlers", "Angewendet"), aantallen="Zahlen", meting="Gemessen", versie="Version",
    voet="Quelle: Bistumsarchiv Münster, über Matricula Online. Diese Website enthält keine Scans, nur per OCR erkannten Text.",
    noscript="Für die Suche ist JavaScript nötig. Alle Haushalte stehen auch je Kirchspiel auf der Seite Kirchspiele."),
- "en": dict(zoeken="Search", parochies="Parishes", over="About this index", werkwijze="Method",
+ "en": dict(privacy="Privacy and cookies", instellingen="Cookie settings", ga_tekst="May this site use Google Analytics to see how it is used? This only happens if you allow it.", ga_ja="Allow", ga_nee="Decline",
+   zoeken="Search", parochies="Parishes", over="About this index", werkwijze="Method",
    ondertitel="Search the 1749/50 census of souls of the Prince-Bishopric of Münster",
    paginatitel="Status Animarum Münster 1749/50 – search the census of souls",
    beschrijving="Search the Status Animarum of the Prince-Bishopric of Münster (1749/50) by name and year of birth: {n} parishes, with links to the scans on Matricula.",
@@ -149,6 +176,35 @@ AANTAL_LABEL = {
  "paginas_kolom_ocr": ("pagina's per kolom gelezen", "Seiten spaltenweise gelesen", "pages read by column"),
  "voorstellen": ("voorstellen", "Vorschläge", "suggestions"), "huishoudens_met_voorstel": ("huishoudens met een voorstel", "Haushalte mit Vorschlag", "households with a suggestion"),
  "bron": ("bron", "Quelle", "source"),
+}
+
+PRIVACY = {
+ "nl": """Deze site staat op GitHub Pages. GitHub verwerkt daarbij technische gegevens zoals je IP-adres om de pagina's te kunnen leveren (zie de [privacyverklaring van GitHub](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)). De lettertypen staan op de site zelf; daarvoor wordt niets bij Google geladen.
+
+**Verbeteringen van bezoekers.** Om recente verbeteringsvoorstellen te tonen, haalt de pagina een openbare tabel op bij Google (docs.google.com). Daarbij ziet Google je IP-adres. Wie zelf een verbetering instuurt, gebruikt een Google-formulier; wat je daar invult, komt bij de beheerder van deze site terecht. Je e-mailadres en toelichting worden nooit gepubliceerd.
+
+{ga}
+
+Vragen? Via de [GitHub-repository]({repo}/issues).""",
+ "de": """Diese Website liegt bei GitHub Pages. GitHub verarbeitet dabei technische Daten wie Ihre IP-Adresse, um die Seiten auszuliefern (siehe die [Datenschutzerklärung von GitHub](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)). Die Schriftarten liegen auf der Website selbst; dafür wird nichts bei Google geladen.
+
+**Verbesserungen von Besuchern.** Um aktuelle Verbesserungsvorschläge anzuzeigen, lädt die Seite eine öffentliche Tabelle bei Google (docs.google.com). Dabei sieht Google Ihre IP-Adresse. Wer selbst eine Verbesserung einsendet, nutzt ein Google-Formular; was Sie dort eingeben, erhält der Betreiber dieser Website. E-Mail-Adresse und Anmerkung werden nie veröffentlicht.
+
+{ga}
+
+Fragen? Über das [GitHub-Repository]({repo}/issues).""",
+ "en": """This site is hosted on GitHub Pages. GitHub processes technical data such as your IP address to deliver the pages (see the [GitHub privacy statement](https://docs.github.com/site-policy/privacy-policies/github-general-privacy-statement)). The fonts are stored on the site itself; nothing is loaded from Google for them.
+
+**Corrections by visitors.** To show recent correction suggestions, the page loads a public table from Google (docs.google.com). Google can see your IP address when this happens. If you send in a correction yourself, you use a Google form; what you enter there goes to the maintainer of this site. Your email address and note are never published.
+
+{ga}
+
+Questions? Via the [GitHub repository]({repo}/issues).""",
+}
+PRIVACY_GA = {
+ "nl": """**Bezoekersstatistiek.** Alleen als je daar toestemming voor geeft, gebruikt deze site Google Analytics om te zien hoeveel mensen de site bezoeken, welke pagina's ze bekijken en waarop gezocht wordt. Google Analytics zet daarvoor cookies. Advertentiefuncties en Google-signalen staan uit, en Google slaat geen IP-adressen op. Google (Google Ireland Ltd.) kan gegevens ook in de Verenigde Staten verwerken; Google valt onder het EU-VS Data Privacy Framework. De gegevens worden na 2 maanden verwijderd. Zonder toestemming wordt Google Analytics niet geladen. Je kunt je keuze altijd wijzigen met de knop hieronder of onderaan elke pagina.""",
+ "de": """**Besucherstatistik.** Nur wenn Sie zustimmen, nutzt diese Website Google Analytics, um zu sehen, wie viele Menschen die Seite besuchen, welche Seiten sie ansehen und wonach gesucht wird. Google Analytics setzt dafür Cookies. Werbefunktionen und Google-Signale sind ausgeschaltet, und Google speichert keine IP-Adressen. Google (Google Ireland Ltd.) kann Daten auch in den USA verarbeiten; Google ist nach dem EU-US Data Privacy Framework zertifiziert. Die Daten werden nach 2 Monaten gelöscht. Ohne Ihre Zustimmung wird Google Analytics nicht geladen. Sie können Ihre Entscheidung jederzeit mit der Schaltfläche unten oder am Fuß jeder Seite ändern.""",
+ "en": """**Visitor statistics.** Only if you give permission does this site use Google Analytics to see how many people visit, which pages they view and what they search for. Google Analytics sets cookies for this. Advertising features and Google signals are switched off, and Google does not store IP addresses. Google (Google Ireland Ltd.) may also process data in the United States; Google is certified under the EU-US Data Privacy Framework. The data is deleted after 2 months. Without your permission Google Analytics is not loaded. You can change your choice at any time with the button below or at the foot of every page.""",
 }
 
 def e(s):
@@ -244,6 +300,15 @@ def kop_html(taal, titel, beschrijving, pad, diepte, actief, extra=""):
                   for href, sleutel in NAV)
     talen = "".join(f'<a href="{basis}{t}/{pad}" lang="{t}" hreflang="{t}"{" aria-current=\"true\"" if t == taal else ""}>{t.upper()}</a>' for t in TALEN)
     robots = "" if CONFIG["zoekmachines"] else '<meta name="robots" content="noindex">'
+    fonts = (f'<link rel="stylesheet" href="{basis}assets/fonts.css">' if _FONTS_OK["lokaal"] else
+             '<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>'
+             f'<link href="{FONTS_URL}" rel="stylesheet">') if CONFIG["fonts_lokaal"] is not None else ""
+    analyse = ""
+    if CONFIG["ga_id"]:
+        U = UI[taal]
+        cfg = {"id": CONFIG["ga_id"], "t": {"tekst": U["ga_tekst"], "ja": U["ga_ja"], "nee": U["ga_nee"],
+                                             "meer": U["privacy"], "privacy": f"{basis}{taal}/privacy.html"}}
+        analyse = f'<script>window.SA_ANALYSE={json.dumps(cfg, ensure_ascii=False)};</script><script src="{basis}assets/analyse.js" defer></script>\n'
     return f"""<!DOCTYPE html>
 <html lang="{taal}">
 <head>
@@ -253,10 +318,9 @@ def kop_html(taal, titel, beschrijving, pad, diepte, actief, extra=""):
 <meta name="description" content="{e(beschrijving)}">
 {robots}<link rel="canonical" href="{CONFIG["basis_url"]}/{taal}/{pad}">
 {alt}
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Courier+Prime:wght@400;700&family=Literata:ital,opsz,wght@0,7..72,400;0,7..72,600;1,7..72,400&display=swap" rel="stylesheet">
+{fonts}
 <link rel="stylesheet" href="{basis}assets/stijl.css">
-{extra}</head>
+{analyse}{extra}</head>
 <body>
 <header class="kop"><div class="kop-binnen">
 <a class="merk" href="{basis}{taal}/index.html"><span>Status Animarum</span> Münster 1749/50</a>
@@ -265,8 +329,11 @@ def kop_html(taal, titel, beschrijving, pad, diepte, actief, extra=""):
 </div></header>
 """
 
-def voet_html(taal):
-    return f'<footer class="voet"><div>{e(UI[taal]["voet"])} <a href="{CONFIG["repo_url"]}">GitHub</a></div></footer>\n</body>\n</html>\n'
+def voet_html(taal, diepte=1):
+    basis = "../" * diepte
+    inst = f' · <a href="#" data-sa-instellingen>{e(UI[taal]["instellingen"])}</a>' if CONFIG["ga_id"] else ""
+    return (f'<footer class="voet"><div>{e(UI[taal]["voet"])} <a href="{CONFIG["repo_url"]}">GitHub</a> · '
+            f'<a href="{basis}{taal}/privacy.html">{e(UI[taal]["privacy"])}</a>{inst}</div></footer>\n</body>\n</html>\n')
 
 def sa_script(taal, diepte, pagina):
     U = UI[taal]
@@ -312,6 +379,7 @@ def bouw(db_pad, uit, alleen=None):
         shutil.rmtree(uit)
     os.makedirs(os.path.join(uit, "data", "hh"))
     shutil.copytree(os.path.join(HIER, "assets"), os.path.join(uit, "assets"))
+    _FONTS_OK["lokaal"] = bool(CONFIG["fonts_lokaal"]) and lokale_fonts(uit)
     n_hh = sum(len(v) for v in per_boek.values())
     n_scans = sum(b["scans"] for b in boeken)
     n_lijst = sum(1 for b in boeken if b["opmaak"] == "lijst")
@@ -412,6 +480,14 @@ def bouw(db_pad, uit, alleen=None):
         if taal == "nl":
             pagina_urls += ["over.html", "parochies.html", "werkwijze.html"]
 
+        # privacy
+        prv = PRIVACY[taal].replace("{ga}", PRIVACY_GA[taal] if CONFIG["ga_id"] else "").replace("{repo}", CONFIG["repo_url"])
+        open(os.path.join(d, "privacy.html"), "w", encoding="utf-8").write(
+            kop_html(taal, f'{U["privacy"]} – Status Animarum Münster 1749/50', beschr, "privacy.html", 1, "")
+            + f'<main class="tekst">\n<h1>{e(U["privacy"])}</h1>\n{markdown.markdown(prv)}\n'
+            + (f'<p><button type="button" data-sa-instellingen>{e(U["instellingen"])}</button></p>' if CONFIG["ga_id"] else "")
+            + '</main>\n' + voet_html(taal))
+
         # parochiepagina's
         for b in boeken:
             hh = per_boek[b["id"]]
@@ -428,7 +504,7 @@ def bouw(db_pad, uit, alleen=None):
             titel = U["pp_titel"].format(plaats=b["plaats"])
             open(os.path.join(d, "p", b["id"] + ".html"), "w", encoding="utf-8").write(
                 kop_html(taal, titel, U["pp_beschr"].format(plaats=b["plaats"]), f'p/{b["id"]}.html', 2, "parochies")
-                + "".join(blok) + sa_script(taal, 2, "parochie") + voet_html(taal))
+                + "".join(blok) + sa_script(taal, 2, "parochie") + voet_html(taal, 2))
             if taal == "nl":
                 pagina_urls.append(f'p/{b["id"]}.html')
 
