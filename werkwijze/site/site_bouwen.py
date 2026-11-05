@@ -308,7 +308,7 @@ def kop_html(taal, titel, beschrijving, pad, diepte, actief, extra=""):
         U = UI[taal]
         cfg = {"id": CONFIG["ga_id"], "t": {"tekst": U["ga_tekst"], "ja": U["ga_ja"], "nee": U["ga_nee"],
                                              "meer": U["privacy"], "privacy": f"{basis}{taal}/privacy.html"}}
-        analyse = f'<script>window.SA_ANALYSE={json.dumps(cfg, ensure_ascii=False)};</script><script src="{basis}assets/analyse.js" defer></script>\n'
+        analyse = f'<script>window.SA_ANALYSE={json.dumps(cfg, ensure_ascii=False)};</script><script src="{basis}assets/keuze.js" defer></script>\n'
     return f"""<!DOCTYPE html>
 <html lang="{taal}">
 <head>
@@ -379,6 +379,9 @@ def bouw(db_pad, uit, alleen=None):
         shutil.rmtree(uit)
     os.makedirs(os.path.join(uit, "data", "hh"))
     shutil.copytree(os.path.join(HIER, "assets"), os.path.join(uit, "assets"))
+    # 'analyse.js' staat op blokkeerlijsten (EasyPrivacy); de site laadt daarom dezelfde code als 'keuze.js'
+    if os.path.exists(os.path.join(uit, "assets", "analyse.js")):
+        shutil.copy(os.path.join(uit, "assets", "analyse.js"), os.path.join(uit, "assets", "keuze.js"))
     _FONTS_OK["lokaal"] = bool(CONFIG["fonts_lokaal"]) and lokale_fonts(uit)
     n_hh = sum(len(v) for v in per_boek.values())
     n_scans = sum(b["scans"] for b in boeken)
