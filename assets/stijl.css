@@ -112,3 +112,13 @@ footer.voet div { max-width: 60rem; margin: 0 auto; padding: 1.25rem 1.5rem 2rem
   main { padding-top: 1.5rem; }
 }
 @media (prefers-reduced-motion: reduce) { * { transition: none !important; } }
+
+/* toestemmingsbalk */
+#sa-toestemming { position: fixed; left: 0; right: 0; bottom: 0; z-index: 20; background: var(--vlak); border-top: 1px solid var(--doordruk);
+  padding: .9rem 1.25rem calc(.9rem + env(safe-area-inset-bottom, 0px)); display: flex; flex-wrap: wrap; gap: .6rem 1.25rem;
+  align-items: center; justify-content: center; font-size: .95rem; }
+#sa-toestemming p { margin: 0; max-width: 40rem; }
+.sa-knoppen { display: flex; gap: .5rem; }
+.sa-knoppen button { min-width: 7rem; }
+.sa-knoppen button[data-keuze="nee"] { background: transparent; color: var(--inkt); }
+footer.voet button, main button[data-sa-instellingen] { font-size: .95rem; }

@@ -238,6 +238,7 @@ ${detailsHTML(h)}
       return true;
     }).sort((a, b) => b[1] - a[1] || a[0] - b[0]);
     laatsteTermen = markeerders(termen, fuzzy, drempel);
+    if (window.gtag) gtag("event", "view_search_results", {search_term: q, zoekwijze: fuzzy ? "klank" : "letterlijk", aantal: resultaten.length});
     getoond = 0;
     status.textContent = resultaten.length === 1 ? T.een : T.aantal.replace("{n}", resultaten.length.toLocaleString(SA.taal));
     await toonMeer();
