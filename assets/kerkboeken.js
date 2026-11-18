@@ -420,25 +420,43 @@ ${spell ? `<details><summary>${esc(T.alleSpellingen)}</summary><ul class="kb-spe
   }
 
   /* ---------- gezinnen ---------- */
-  let GEZ = [];
+  let GEZ = [], GZ = null;   // GZ: laatste zoekvraag met alle gevonden gezinnen; aan/uit zetten filtert lokaal
   async function zoekGezin() {
     await laad();
     const naam = $("gz-naam").value.trim(), als = $("gz-als").value, par = $("gz-par").value === "" ? null : +$("gz-par").value;
-    $("gz-uitkomst").innerHTML = ""; $("gz-csv").hidden = true;
+    $("gz-uitkomst").innerHTML = ""; $("gz-csv").hidden = true; $("gz-namen").innerHTML = "";
     if (!naam) { $("gz-status").textContent = T.geenNaam; return; }
     const bv = [...basisvormen(naam, 80, false).keys()];
-    $("gz-namen").textContent = bv.length ? T.meegenomen + ": " + bv.map(b => NAMEN.b[b]).join(", ") : "";
-    if (!bv.length) { $("gz-status").textContent = T.niets; return; }
+    if (!bv.length) { $("gz-status").textContent = T.niets; GZ = null; return; }
     $("gz-status").textContent = T.bezig;
     const l = inLijst(bv);
     const w = als === "vader" ? `v_basis in (${l})` : als === "moeder" ? `m_basis in (${l})` : `(v_basis in (${l}) or m_basis in (${l}))`;
-    GEZ = await sql(`select id, parochie_id, vader, moeder, n, van, tot, k from gezin where ${w}${par != null ? " and parochie_id = " + par : ""} order by parochie_id, van`);
+    const rijen = await sql(`select id, parochie_id, vader, moeder, n, van, tot, k, v_basis, m_basis from gezin where ${w}${par != null ? " and parochie_id = " + par : ""} order by parochie_id, van`);
+    const oud = GZ && GZ.naam === naam ? GZ.uit : new Set();
+    GZ = {naam, als, bv, uit: new Set([...oud].filter(b => bv.includes(b))), rijen};
+    toonGezin();
+  }
+  function toonGezin() {
+    const {als, bv, uit, rijen} = GZ;
+    const heeft = (r, b) => (als !== "moeder" && r[8] === b) || (als !== "vader" && r[9] === b);
+    const tel = new Map(bv.map(b => [b, rijen.filter(r => heeft(r, b)).length]));
+    const chips = bv.filter(b => tel.get(b) > 0).sort((a, b) => tel.get(b) - tel.get(a))
+      .map(b => `<button type="button" class="kb-chip${uit.has(b) ? " uit" : ""}" data-b="${b}" aria-pressed="${!uit.has(b)}" title="${esc(LEDEN[b].map(x => x[0]).join(", "))}">${esc(NAMEN.b[b])} <span>${fmt(tel.get(b))}</span></button>`).join("");
+    $("gz-namen").className = "kb-chips";
+    $("gz-namen").innerHTML = chips ? `<span class="klein">${esc(T.meegenomen)}:</span> ${chips}` : "";
+    GEZ = rijen.filter(r => bv.some(b => !uit.has(b) && heeft(r, b)));
     $("gz-status").textContent = GEZ.length === 1 ? T.gezinEen : T.gezinAantal.replace("{n}", fmt(GEZ.length));
     $("gz-csv").hidden = !GEZ.length;
     $("gz-uitkomst").innerHTML = GEZ.length ? `<div class="tabel"><table><thead><tr><th>${esc(T.parochie)}</th><th>${esc(T.rollen.vader)}</th><th>${esc(T.rollen.moeder)}</th><th class="getal">${esc(T.kinderen)}</th><th>${esc(T.dopen)}</th></tr></thead><tbody>${
       GEZ.map(([id, p, v, m, n, van, tot, k]) => `<tr><td>${esc(META.parochies[p])}</td><td>${esc(v)}</td><td>${esc(m)}</td><td class="getal">${n}</td><td>${
         JSON.parse(k).map(([j, kind, bk, pg]) => `<a href="${esc(scanLink(bk, pg))}" target="_blank" rel="noopener">${j || "?"}</a> ${esc(kind || "")}`).join("; ")}</td></tr>`).join("")}</tbody></table></div>` : "";
   }
+  $("gz-namen") && $("gz-namen").addEventListener("click", e => {
+    const c = e.target.closest(".kb-chip"); if (!c || !GZ) return;
+    const b = +c.dataset.b;
+    if (GZ.uit.has(b)) GZ.uit.delete(b); else GZ.uit.add(b);
+    toonGezin();
+  });
   function csvGezin() {
     const rij = [];
     for (const [id, p, v, m, n, van, tot, k] of GEZ) for (const [j, kind, bk, pg] of JSON.parse(k)) rij.push([id, META.parochies[p], v, m, j, kind, scanLink(bk, pg)]);
