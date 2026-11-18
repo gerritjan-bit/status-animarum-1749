@@ -10,7 +10,14 @@
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/stijl.css">
 <script>window.SA_ANALYSE={"id": "G-1PGFG99QHQ", "t": {"tekst": "May this site use Google Analytics to see how it is used? This only happens if you allow it.", "ja": "Allow", "nee": "Decline", "meer": "Privacy and cookies", "privacy": "../en/privacy.html"}};</script><script src="../assets/keuze.js" defer></script>
-</head>
+<style>
+.kb-nieuw{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;max-width:40rem;margin:1.25rem 0 1.75rem;padding:.85rem 1.1rem;background:var(--vlak);border:1px solid var(--lijn);border-left:4px solid var(--lint);border-radius:4px}
+.kb-nieuw p{margin:0;flex:1 1 22rem;font-size:.97rem;line-height:1.5}
+.kb-nieuw .kb-label{display:block;margin-bottom:.15rem;font:700 .78rem/1.2 var(--typ);letter-spacing:.08em;text-transform:uppercase;color:var(--lint)}
+.kb-nieuw b{font-weight:600;font-variant-numeric:tabular-nums}
+.kb-nieuw a{flex:0 0 auto;font:700 .92rem/1.2 var(--typ);text-decoration:none;padding:.5rem .8rem;border:1px solid var(--lint);border-radius:3px;color:var(--lint);white-space:nowrap}
+.kb-nieuw a:hover{background:var(--lint);color:var(--vlak)}
+</style></head>
 <body>
 <header class="kop"><div class="kop-binnen">
 <a class="merk" href="../en/index.html"><span>Status Animarum</span> Münster 1749/50</a>
@@ -20,6 +27,7 @@
 <main>
 <h1><span class="ond">Status Animarum</span> Münster 1749/50</h1>
 <p class="ondertitel">Search the 1749/50 census of souls of the Prince-Bishopric of Münster</p>
+<aside class="kb-nieuw" aria-label="New and experimental"><p><span class="kb-label">New and experimental</span>Also search <b data-kb="vermeldingen">1,185,984</b> mentions in <b data-kb="akten">372,399</b> records from the baptism, marriage and burial registers (1750–1820) of <b data-kb="parochies">36</b> parishes in the western Münsterland.</p><a href="../en/kerkboeken.html">Go to the church books →</a></aside><script>(function(){try{fetch("/kerkboeken-data/meta.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(m){if(!m)return;document.querySelectorAll(".kb-nieuw [data-kb]").forEach(function(e){var v=m[e.getAttribute("data-kb")];if(Array.isArray(v))v=v.length;if(typeof v==="number"&&v>0)e.textContent=v.toLocaleString("en-GB")})}).catch(function(){})}catch(e){}})();</script>
 <div class="tekst"><p>Search the typed transcripts of the Status Animarum of the Prince-Bishopric of Münster, 1749–1751: 106 parishes, 1,902 scans, 25,153 households. You can search by name and by estimated year of birth.</p>
 <p>The text was read by a computer and contains errors. Every result links to the scan on Matricula Online. The scan is always the authority.</p></div>
 <form class="zoek" id="zoekform" role="search">
