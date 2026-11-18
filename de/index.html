@@ -10,7 +10,14 @@
 <link rel="stylesheet" href="../assets/fonts.css">
 <link rel="stylesheet" href="../assets/stijl.css">
 <script>window.SA_ANALYSE={"id": "G-1PGFG99QHQ", "t": {"tekst": "Darf diese Website mit Google Analytics erfassen, wie sie genutzt wird? Das geschieht nur mit Ihrer Zustimmung.", "ja": "Zulassen", "nee": "Ablehnen", "meer": "Datenschutz und Cookies", "privacy": "../de/privacy.html"}};</script><script src="../assets/keuze.js" defer></script>
-</head>
+<style>
+.kb-nieuw{display:flex;flex-wrap:wrap;align-items:center;gap:.5rem 1.5rem;max-width:40rem;margin:1.25rem 0 1.75rem;padding:.85rem 1.1rem;background:var(--vlak);border:1px solid var(--lijn);border-left:4px solid var(--lint);border-radius:4px}
+.kb-nieuw p{margin:0;flex:1 1 22rem;font-size:.97rem;line-height:1.5}
+.kb-nieuw .kb-label{display:block;margin-bottom:.15rem;font:700 .78rem/1.2 var(--typ);letter-spacing:.08em;text-transform:uppercase;color:var(--lint)}
+.kb-nieuw b{font-weight:600;font-variant-numeric:tabular-nums}
+.kb-nieuw a{flex:0 0 auto;font:700 .92rem/1.2 var(--typ);text-decoration:none;padding:.5rem .8rem;border:1px solid var(--lint);border-radius:3px;color:var(--lint);white-space:nowrap}
+.kb-nieuw a:hover{background:var(--lint);color:var(--vlak)}
+</style></head>
 <body>
 <header class="kop"><div class="kop-binnen">
 <a class="merk" href="../de/index.html"><span>Status Animarum</span> Münster 1749/50</a>
@@ -20,6 +27,7 @@
 <main>
 <h1><span class="ond">Status Animarum</span> Münster 1749/50</h1>
 <p class="ondertitel">Die Seelenregister des Fürstbistums Münster durchsuchen</p>
+<aside class="kb-nieuw" aria-label="Neu und experimentell"><p><span class="kb-label">Neu und experimentell</span>Durchsuchen Sie auch <b data-kb="vermeldingen">1.185.984</b> Nennungen in <b data-kb="akten">372.399</b> Einträgen aus den Tauf-, Heirats- und Sterbebüchern (1750–1820) von <b data-kb="parochies">36</b> Pfarreien im Westmünsterland.</p><a href="../de/kerkboeken.html">Zu den Kirchenbüchern →</a></aside><script>(function(){try{fetch("/kerkboeken-data/meta.json",{cache:"no-cache"}).then(function(r){return r.ok?r.json():null}).then(function(m){if(!m)return;document.querySelectorAll(".kb-nieuw [data-kb]").forEach(function(e){var v=m[e.getAttribute("data-kb")];if(Array.isArray(v))v=v.length;if(typeof v==="number"&&v>0)e.textContent=v.toLocaleString("de-DE")})}).catch(function(){})}catch(e){}})();</script>
 <div class="tekst"><p>Durchsuchen Sie die maschinengeschriebenen Abschriften des Status Animarum des Fürstbistums Münster von 1749–1751: 106 Kirchspiele, 1.902 Scans, 25.153 Haushalte. Gesucht werden kann nach Namen und nach geschätztem Geburtsjahr.</p>
 <p>Der Text wurde maschinell gelesen und enthält Fehler. Zu jedem Treffer gibt es einen Link zum Scan bei Matricula Online. Maßgeblich ist immer der Scan.</p></div>
 <form class="zoek" id="zoekform" role="search">
