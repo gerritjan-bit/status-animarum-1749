@@ -33,6 +33,18 @@
     return 200 * vorig[lb] / (la + lb);
   }
 
+  /* ---------- koppeling met de kerkboeken 1750–1820 ---------- */
+  const KB_PLAATSEN = ["ahaus", "alstätte", "asbeck", "barlo", "bocholt", "borken", "burlo", "coesfeld", "darfeld", "eggerode", "epe", "gemen",
+    "gescher", "gronau", "gross-reken", "heek", "heiden", "holtwick", "legden", "lette", "metelen", "nienborg", "osterwick", "ottenstein",
+    "ramsdorf", "rhede", "schöppingen", "stadtlohn", "südlohn", "velen", "vreden", "weseke", "wessum", "wüllen", "zwillbrock"];
+  const KB_T = {nl: {alle: "Zoek \u201c{q}\u201d ook in de kerkboeken 1750\u20131820 \u2192", hh: "In de kerkboeken 1750\u20131820"},
+                de: {alle: "\u201e{q}\u201c auch in den Kirchenb\u00fcchern 1750\u20131820 suchen \u2192", hh: "In den Kirchenb\u00fcchern 1750\u20131820"},
+                en: {alle: "Also search \u201c{q}\u201d in the church books 1750\u20131820 \u2192", hh: "In the church books 1750\u20131820"}}[SA.taal] || {};
+  let kbTerm = "";
+  const kbPlaats = p => String(p || "").toLowerCase().replace(/ß/g, "ss").split(" ")[0];
+  const kbHeeft = p => KB_PLAATSEN.some(k => k.replace(/ß/g, "ss") === kbPlaats(p));
+  const kbLink = (q, par) => `${SA.basis}${SA.taal}/kerkboeken.html#` + new URLSearchParams(par ? {q, par} : {q}).toString();
+
   const esc = s => String(s == null ? "" : s).replace(/[&<>"']/g, c => ({"&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;"}[c]));
 
   /* ---------- weergave (zelfde opmaak als de parochiepagina's) ---------- */
@@ -64,7 +76,7 @@
     const rijen = (pers || []).map(([rel, naam, lft, geb]) =>
       `<tr><td>${esc(T.rel[rel] || rel)}</td><td>${esc(naam || "–")}</td><td class="getal">${lft == null ? "" : lft}</td><td class="getal">${geb == null ? "" : geb}</td></tr>`).join("");
     return `<article class="hh" id="${esc(sleutel)}" data-sleutel="${esc(sleutel)}">
-<div class="hh-kop"><span class="plaats"><a href="${SA.basis}${SA.taal}/p/${esc(boek.id)}.html#${esc(sleutel)}">${esc(boek.plaats)}</a></span><a href="${esc(boek.url)}?pg=${pg}" target="_blank" rel="noopener">${esc(T.scan)} ${esc(label)}</a><span>${esc(sleutel)}</span></div>
+<div class="hh-kop"><span class="plaats"><a href="${SA.basis}${SA.taal}/p/${esc(boek.id)}.html#${esc(sleutel)}">${esc(boek.plaats)}</a></span><a href="${esc(boek.url)}?pg=${pg}" target="_blank" rel="noopener">${esc(T.scan)} ${esc(label)}</a><span>${esc(sleutel)}</span>${kbTerm && kbHeeft(boek.plaats) ? `<a href="${esc(kbLink(kbTerm, boek.plaats))}">${esc(KB_T.hh)} \u2192</a>` : ""}</div>
 <p class="hh-tekst">${tekstHTML(tekst, corr, termen)}</p>${h[7] ? `<div class="voorstel"><span class="label">${esc(T.voorstel)}</span>${tekstHTML(h[7], [], termen)}</div>` : ""}
 <details><summary>${esc(T.details)}</summary>
 ${detailsHTML(h)}
@@ -240,6 +252,8 @@ ${detailsHTML(h)}
     laatsteTermen = markeerders(termen, fuzzy, drempel);
     if (window.gtag) gtag("event", "view_search_results", {search_term: q, zoekwijze: fuzzy ? "klank" : "letterlijk", aantal: resultaten.length});
     getoond = 0;
+    kbTerm = fuzzy ? [...termen].sort((a, b) => b.length - a.length)[0] : "";
+    if (kbTerm && KB_T.alle) uit.insertAdjacentHTML("afterbegin", `<p class="klein"><a href="${esc(kbLink(kbTerm, bk != null ? BOEKEN[bk].plaats : ""))}">${esc(KB_T.alle.replace("{q}", kbTerm))}</a></p>`);
     status.textContent = resultaten.length === 1 ? T.een : T.aantal.replace("{n}", resultaten.length.toLocaleString(SA.taal));
     await toonMeer();
   }

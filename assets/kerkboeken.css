@@ -1,0 +1,37 @@
+/* Kerkboeken 1750–1820 — aanvulling op stijl.css */
+.kb-sub { display: flex; flex-wrap: wrap; gap: .25rem 1.25rem; margin: 0 0 1.5rem; font: 400 .95rem/1.4 var(--typ); }
+.kb-sub a { text-decoration: none; color: var(--doordruk); }
+.kb-sub a[aria-current="page"] { color: var(--inkt); text-decoration: underline; text-decoration-color: var(--lint); }
+.kb-regel { display: grid; grid-template-columns: 2fr 1.4fr auto auto; gap: .5rem; margin-bottom: .5rem; align-items: center; }
+.kb-regel input[type=search] { min-width: 0; font: 400 1.1rem/1.3 var(--typ); padding: .55rem .7rem;
+  border: 1px solid var(--doordruk); background: var(--papier); color: var(--inkt); border-radius: 2px; }
+.kb-regel .kb-vn { font-size: 1rem; }
+.kb-regel select { font: inherit; padding: .45rem .4rem; background: var(--papier); color: var(--inkt); border: 1px solid var(--lijn); }
+.kb-weg { padding: .4rem .7rem; background: transparent; color: var(--inkt); border-color: var(--lijn); }
+.kb-acties { display: flex; flex-wrap: wrap; gap: .5rem 1.5rem; align-items: center; margin: .25rem 0 .5rem; font-size: .95rem; }
+.kb-acties select { font: inherit; padding: .25rem .4rem; background: var(--papier); color: var(--inkt); border: 1px solid var(--lijn); }
+.kb-link { background: none; border: 0; padding: 0; color: var(--inkt); font: 400 .95rem/1.4 var(--lees);
+  text-decoration: underline; text-decoration-color: var(--lint); text-underline-offset: .15em; cursor: pointer; }
+.kb-knop { margin: 1rem 0 0; }
+.kb-term { margin: .5rem 0 1rem; padding: .6rem .8rem; border-left: 3px solid var(--lijn); }
+.kb-termkop { margin: 0 0 .35rem; font-size: .95rem; }
+.kb-chips { margin: .25rem 0; display: flex; flex-wrap: wrap; gap: .35rem; align-items: center; }
+.kb-chip { font: 400 .9rem/1.2 var(--typ); padding: .3rem .55rem; border: 1px solid var(--doordruk); background: var(--papier);
+  color: var(--inkt); border-radius: 2px; cursor: pointer; }
+.kb-chip span { color: var(--doordruk); font-size: .8rem; }
+.kb-chip.uit { text-decoration: line-through; opacity: .55; }
+.kb-chip.alias { border-style: dashed; }
+.kb-chip.bijna { border-color: var(--lijn); color: var(--doordruk); }
+.kb-spell { font-size: .88rem; margin: .4rem 0; padding-left: 1.2rem; }
+.kb-akte table { margin-top: .25rem; }
+.kb-akte td:first-child { color: var(--doordruk); white-space: nowrap; }
+.kb-akte td:nth-child(3) { font-family: var(--typ); }
+tr.kb-treffer td { background: color-mix(in srgb, var(--markeer) 35%, transparent); }
+tr.kb-treffer.alias td { background: color-mix(in srgb, var(--voorstel) 70%, transparent); }
+.kb-akte mark { background: var(--markeer); color: inherit; padding: 0 .1em; }
+.kb-onzeker { color: var(--lint); font-size: .85rem; }
+#kb-dekking td { white-space: nowrap; }
+@media (max-width: 34rem) {
+  .kb-regel { grid-template-columns: 1fr 1fr; }
+  .kb-regel .kb-naam { grid-column: 1 / -1; }
+}

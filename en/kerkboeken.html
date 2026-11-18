@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Church books Westmünsterland 1750–1820 – Search</title>
+<meta name="description" content="Search the baptism, marriage and burial registers of 36 Catholic parishes around Vreden and Stadtlohn from 1750–1820. The records were read automatically w">
+<link rel="canonical" href="https://gerritjan-bit.github.io/status-animarum-1749/en/kerkboeken.html">
+<link rel="alternate" hreflang="nl" href="https://gerritjan-bit.github.io/status-animarum-1749/nl/kerkboeken.html"><link rel="alternate" hreflang="de" href="https://gerritjan-bit.github.io/status-animarum-1749/de/kerkboeken.html"><link rel="alternate" hreflang="en" href="https://gerritjan-bit.github.io/status-animarum-1749/en/kerkboeken.html"><link rel="alternate" hreflang="x-default" href="https://gerritjan-bit.github.io/status-animarum-1749/en/kerkboeken.html">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/stijl.css">
+<script>window.SA_ANALYSE={"id": "G-1PGFG99QHQ", "t": {"tekst": "May this site use Google Analytics to see how it is used? This only happens if you allow it.", "ja": "Allow", "nee": "Decline", "meer": "Privacy and cookies", "privacy": "../en/privacy.html"}};</script><script src="../assets/keuze.js" defer></script>
+<link rel="stylesheet" href="../assets/kerkboeken.css">
+</head>
+<body>
+<header class="kop"><div class="kop-binnen">
+<a class="merk" href="../en/index.html"><span>Status Animarum</span> Münster 1749/50</a>
+<nav aria-label="Search"><ul><li><a href="../en/index.html">Search</a></li><li><a href="../en/parochies.html">Parishes</a></li><li><a href="../en/over.html">About this index</a></li><li><a href="../en/werkwijze.html">Method</a></li><li><a href="../en/kerkboeken.html" aria-current="page">Church books 1750–1820</a></li></ul></nav>
+<div class="talen"><a href="../nl/kerkboeken.html" lang="nl" hreflang="nl">NL</a><a href="../de/kerkboeken.html" lang="de" hreflang="de">DE</a><a href="../en/kerkboeken.html" lang="en" hreflang="en" aria-current="true">EN</a></div>
+</div></header>
+<main>
+<h1><span class="ond">Church books Westmünsterland</span> 1750–1820</h1>
+<p class="ondertitel">Baptism, marriage and burial registers of 36 parishes around Vreden and Stadtlohn</p>
+<nav class="kb-sub" aria-label="Church books 1750–1820"><a href="../en/kerkboeken.html" aria-current="page">Search</a><a href="../en/kerkboeken-gezinnen.html">Families</a><a href="../en/kerkboeken-namen.html">Names</a><a href="../en/kerkboeken-over.html">About the church books</a></nav>
+<div class="tekst"><p>Search the baptism, marriage and burial registers of 36 Catholic parishes around Vreden and Stadtlohn from 1750–1820. The records were read automatically with artificial intelligence and have not been checked. Every record links to the scan on Matricula Online. The scan is always authoritative.</p></div>
+<form class="zoek" id="kb-form" role="search">
+<div id="kb-regels"></div>
+<p class="kb-acties"><button type="button" id="kb-plus" class="kb-link">+ add a name</button>
+<label id="kb-samenvak" hidden>The names occur together <select id="kb-samen"><option value="akte">in the same record</option><option value="pagina">on the same scan</option><option value="jaar">in the same parish and year</option></select></label></p>
+<div class="opties">
+<label><input type="radio" name="kb-modus" id="kb-fuzzy" checked> By sound and spelling</label>
+<label><input type="radio" name="kb-modus" id="kb-exact"> Exact</label>
+<label id="kb-drempelvak">Strictness <input type="range" id="kb-drempel" min="60" max="100" value="80"> <span id="kb-drempelwaarde">80</span></label>
+<label><input type="checkbox" id="kb-alias" checked> Include links from the source</label>
+</div>
+<div class="opties">
+<label>Parish <select id="kb-par" data-parochies><option value="">All parishes</option></select></label>
+<label>Type <select id="kb-soort"><option value="">all types</option><option value="0">baptism</option><option value="1">marriage</option><option value="2">burial</option><option value="3">banns</option><option value="4">other</option></select></label>
+<span class="geb"><label>Year from <input type="number" id="kb-van" min="1600" max="1900" inputmode="numeric" placeholder="1750"></label>
+<label>to <input type="number" id="kb-tot" min="1600" max="1900" inputmode="numeric" placeholder="1820"></label></span>
+</div>
+<p class="kb-knop"><button type="submit">Search</button></p>
+</form>
+<noscript><p>Searching requires JavaScript.</p></noscript>
+<p class="status" id="kb-status" role="status" aria-live="polite"></p>
+<div id="kb-namen"></div>
+<p><button type="button" id="kb-csv" class="kb-link" hidden>Download as CSV</button></p>
+<div id="kb-uitkomst"></div>
+</main>
+<script>window.KB={"taal": "en", "basis": "../", "data": "/kerkboeken-data/", "pagina": "zoeken", "zoekpagina": "../en/kerkboeken.html", "ui": {"laden": "Loading the list of names…", "verbinden": "Connecting to the database…", "bezig": "Searching…", "laadAkten": "Loading records…", "aantal": "{n} records found", "een": "1 record found", "aantalSamen": "found together {n} times ({a} records)", "niets": "Nothing found. Try a lower strictness, leave out role or first name, or choose \"on the same scan\".", "geenNaam": "Please enter a surname.", "meer": "Show more", "scan": "Scan", "achternaam": "Surname", "voornaam": "First name", "rol": "Role", "elkeRol": "any role", "weg": "Remove name", "toelichting": "Notes", "meegenomen": "spelling groups included (click to switch on or off)", "geenSpelling": "no spelling found", "viaAlias": "linked in the source (nunc, dicta, genannt …):", "lijktOp": "similar, not included:", "voegToe": "Add to the search", "aliasUitleg": "Linked to this name in the source; click to switch off", "alleSpellingen": "All spellings included", "lees": "read", "zekLaag": "uncertain reading", "zekMidden": "not entirely certain", "controle": "check", "csvBezig": "Creating CSV…", "csvKlaar": "CSV downloaded.", "csvKop": ["group", "match", "parish", "book", "year", "date", "type", "role", "first name", "surname", "reading", "alias word", "alias name", "hamlet", "certainty", "check", "note", "scan"], "csvGezinKop": ["family", "parish", "father", "mother", "year", "child", "scan"], "gezinEen": "1 family found", "gezinAantal": "{n} families found", "parochie": "Parish", "kinderen": "Children", "dopen": "Baptisms (click for the scan)", "basisvorm": "Base form", "vermeldingen": "Mentions", "spellingen": "Spellings read", "koppelingen": "Linked in the source", "totaal": "{v} mentions in {a} records from {p} parishes (updated {d}).", "fout": "Something went wrong while loading. Please try again later.", "rollen": {"dopeling": "child baptised", "vader": "father", "moeder": "mother", "peet": "godparent", "bruidegom": "groom", "bruid": "bride", "getuige": "witness", "overledene": "deceased", "echtgenoot": "spouse", "ouder": "parent", "nabestaande": "relative", "priester": "priest", "overig": "other"}, "soorten": {"doop": "baptism", "huwelijk": "marriage", "overlijden": "burial", "ondertrouw": "banns", "anders": "other"}}};</script>
+<script src="../assets/lib/index.js"></script>
+<script src="../assets/kerkboeken.js" defer></script>
+<footer class="voet"><div>Source: Bistumsarchiv Münster, via Matricula Online. This site contains no scans, only OCR text. <a href="https://github.com/gerritjan-bit/status-animarum-1749">GitHub</a> · <a href="../en/privacy.html">Privacy and cookies</a> · <a href="#" data-sa-instellingen>Cookie settings</a></div></footer>
+</body>
+</html>
