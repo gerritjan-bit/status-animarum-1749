@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Tools – Status Animarum Münster 1749/50</title>
+<meta name="description" content="A woman almost always had her children between the ages of 18 and 40. If you know when her children were born or baptised, you can work out roughly when sh">
+<link rel="canonical" href="https://gerritjan-bit.github.io/status-animarum-1749/en/hulpmiddelen.html">
+<link rel="alternate" hreflang="nl" href="https://gerritjan-bit.github.io/status-animarum-1749/nl/hulpmiddelen.html"><link rel="alternate" hreflang="de" href="https://gerritjan-bit.github.io/status-animarum-1749/de/hulpmiddelen.html"><link rel="alternate" hreflang="en" href="https://gerritjan-bit.github.io/status-animarum-1749/en/hulpmiddelen.html"><link rel="alternate" hreflang="x-default" href="https://gerritjan-bit.github.io/status-animarum-1749/en/hulpmiddelen.html">
+<link rel="stylesheet" href="../assets/fonts.css">
+<link rel="stylesheet" href="../assets/stijl.css">
+<script>window.SA_ANALYSE={"id": "G-1PGFG99QHQ", "t": {"tekst": "May this site use Google Analytics to see how it is used? This only happens if you allow it.", "ja": "Allow", "nee": "Decline", "meer": "Privacy and cookies", "privacy": "../en/privacy.html"}};</script><script src="../assets/keuze.js" defer></script>
+<style>
+.gc{max-width:44rem;margin:1rem 0 0;padding:1.1rem 1.25rem 1.25rem;background:var(--vlak);border:1px solid var(--lijn)}
+.gc-velden{display:flex;flex-wrap:wrap;gap:1rem 2rem}
+.gc-velden label{display:flex;flex-direction:column;gap:.3rem;font-size:.95rem}
+.gc input[type=number]{width:7rem;font:700 1.15rem/1.2 var(--typ);padding:.45rem .55rem;background:var(--papier);color:var(--inkt);border:1px solid var(--lijn)}
+.gc .hint{font-size:.8rem;color:var(--doordruk)}
+.gc details{margin-top:1rem;font-size:.92rem}
+.gc details summary{cursor:pointer;color:var(--doordruk)}
+.gc-inst{display:grid;grid-template-columns:auto auto;gap:.4rem 1rem;align-items:center;margin-top:.6rem;justify-content:start}
+.gc-inst input{width:4.2rem!important;font:400 1rem/1.2 var(--typ)!important;padding:.25rem .4rem!important}
+.gc-uit{margin-top:1.25rem;border-top:1px solid var(--lijn);padding-top:1rem}
+.gc-uit .rij{display:grid;grid-template-columns:5.5rem 1fr;gap:.2rem 1rem;margin:.2rem 0 .9rem}
+.gc-uit .wie{font:700 .8rem/1.9 var(--typ);letter-spacing:.08em;text-transform:uppercase;color:var(--lint)}
+.gc-uit .groot{font:700 1.25rem/1.4 var(--typ)}
+.gc-uit .klein{color:var(--doordruk);font-size:.92rem}
+.gc-uit .uitleg{grid-column:2;font-size:.92rem;margin:.3rem 0 0}
+.gc-let{margin:.2rem 0 1rem;padding:.6rem .8rem;border-left:3px solid var(--lint);background:var(--papier);font-size:.93rem}
+.gc svg{width:100%;height:auto;display:block;margin:.3rem 0 .2rem}
+.gc svg text{font:12px var(--typ);fill:var(--doordruk)}
+.gc .noot{font-size:.88rem;color:var(--doordruk);max-width:44rem}
+@media (max-width:30rem){.gc-uit .rij{grid-template-columns:1fr}.gc-uit .uitleg{grid-column:1}}
+</style>
+</head>
+<body>
+<header class="kop"><div class="kop-binnen">
+<a class="merk" href="../en/index.html"><span>Status Animarum</span> Münster 1749/50</a>
+<nav aria-label="Search"><ul><li><a href="../en/index.html">Search</a></li><li><a href="../en/parochies.html">Parishes</a></li><li><a href="../en/over.html">About this index</a></li><li><a href="../en/werkwijze.html">Method</a></li><li><a href="../en/kerkboeken.html">Church books 1750–1820</a></li><li><a href="../en/hulpmiddelen.html">Tools</a></li></ul></nav>
+<div class="talen"><a href="../nl/hulpmiddelen.html" lang="nl" hreflang="nl">NL</a><a href="../de/hulpmiddelen.html" lang="de" hreflang="de">DE</a><a href="../en/hulpmiddelen.html" lang="en" hreflang="en" aria-current="true">EN</a></div>
+</div></header>
+<main>
+<h1><span class="ond">Tools</span></h1>
+<p class="ondertitel">Small calculators for family history research</p>
+<h2 id="geboortejaar">Estimate the parents’ year of birth</h2>
+<div class="tekst"><p>A woman almost always had her children between the ages of 18 and 40. If you know when her children were born or baptised, you can work out roughly when she herself was born. Enter the year of birth of the oldest and the youngest child you know of.</p></div>
+<form class="gc" id="gc" onsubmit="return false">
+<div class="gc-velden">
+<label>Oldest child born in <input type="number" id="gc-oudste" min="1000" max="2100" inputmode="numeric" placeholder="1760"></label>
+<label>Youngest child born in <input type="number" id="gc-jongste" min="1000" max="2100" inputmode="numeric" placeholder="1778"><span class="hint">leave empty if you know only one child</span></label>
+</div>
+<details><summary>Adjust the assumptions</summary><div class="gc-inst">
+<label for="gc-mmin">Mother’s age at first child, at least</label><span><input type="number" id="gc-mmin" value="18" min="10" max="60"> years</span>
+<label for="gc-mmax">Mother’s age at last child, at most</label><span><input type="number" id="gc-mmax" value="40" min="10" max="60"> years</span>
+<label for="gc-vmin">Father’s age at first child, at least</label><span><input type="number" id="gc-vmin" value="18" min="10" max="80"> years</span>
+</div></details>
+<div class="gc-uit" id="gc-uit" role="status" aria-live="polite"></div>
+</form>
+<noscript><p>The calculator requires JavaScript.</p></noscript>
+<p class="noot">This is a rule of thumb, not a certainty. Some women still had a child after 40, up to about 45; adjust the limit if needed. If you do not know the first or last child, the limits still hold, but the range becomes wider than necessary. The more years between the oldest and the youngest child, the more precise the estimate.</p>
+</main>
+<script>(function(){
+var T={"leeg": "Enter the year of birth of the oldest child.", "moeder": "Mother", "vader": "Father", "tussen": "born between {a} and {b}", "midden": "middle: c. {m} (± {d} years)", "precies": "born c. {a}", "vaderUit": "born in {b} or earlier", "uitlegB": "She was at least {min} when the oldest child was born ({o}), so she was born in {b} or earlier.", "uitlegA": "She was at most {max} when the youngest child was born ({j}), so she was born in {a} or later.", "uitlegV": "He was at least {min} when the oldest child was born ({o}). There is no upper limit to his age: men often married later than women, and a widower sometimes remarried a much younger woman. So the father may have been considerably older than the mother.", "wisselen": "The youngest child was born before the oldest. The years have been swapped.", "teLang": "There are {n} years between the oldest and the youngest child. That does not fit one mother aged {min} to {max}. Perhaps there were two mothers (the father remarried), two families with the same names, or one of the years is wrong.", "tijdlijn": "Timeline", "kinderen": "children", "conflict": "no consistent estimate: going by the oldest child born in {b} or earlier, going by the youngest child in {a} or later"}, $=function(i){return document.getElementById(i)};
+function f(s,o){return s.replace(/\{(\w+)\}/g,function(_,k){return o[k]})}
+function n(i){var v=parseInt($(i).value,10);return isNaN(v)?null:v}
+function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[c]})}
+function lijn(o,j,a,b,bv){
+  var lo=Math.min(a,bv)-4, hi=j+4, W=600, x=function(y){return 20+(y-lo)/(hi-lo)*(W-40)};
+  var s='<svg viewBox="0 0 '+W+' 96" role="img" aria-label="'+esc(T.tijdlijn)+'">';
+  s+='<line x1="20" x2="'+(W-20)+'" y1="78" y2="78" stroke="var(--lijn)"/>';
+  var stap=(hi-lo)>60?10:5;
+  for(var y=Math.ceil(lo/stap)*stap;y<=hi;y+=stap){s+='<line x1="'+x(y)+'" x2="'+x(y)+'" y1="74" y2="82" stroke="var(--lijn)"/><text x="'+x(y)+'" y="94" text-anchor="middle">'+y+'</text>'}
+  s+='<rect x="'+x(a)+'" y="14" width="'+Math.max(3,x(b)-x(a))+'" height="16" fill="var(--lint)" opacity=".75" rx="2"/>';
+  s+='<text x="'+(x(a)-6)+'" y="26" text-anchor="end">'+esc(T.moeder)+'</text>';
+  s+='<line x1="20" x2="'+x(bv)+'" y1="44" y2="44" stroke="var(--inkt)" stroke-width="3" stroke-dasharray="2 4" opacity=".55"/><line x1="'+x(bv)+'" x2="'+x(bv)+'" y1="37" y2="51" stroke="var(--inkt)" stroke-width="3"/>';
+  s+='<text x="'+(x(bv)+6)+'" y="48">'+esc(T.vader)+' ≤ '+bv+'</text>';
+  s+='<rect x="'+x(o)+'" y="58" width="'+Math.max(3,x(j)-x(o))+'" height="10" fill="var(--doordruk)" opacity=".45" rx="2"/>';
+  s+='<text x="'+(x(j)+6)+'" y="67">'+esc(T.kinderen)+'</text>';
+  return s+'</svg>';
+}
+function reken(){
+  var o=n("gc-oudste"), j=n("gc-jongste"), mi=n("gc-mmin")||18, ma=n("gc-mmax")||40, vm=n("gc-vmin")||18, uit=$("gc-uit"), let="";
+  try{history.replaceState(null,"",o?"#oudste="+o+(j?"&jongste="+j:""):location.pathname)}catch(e){}
+  if(!o||o<1000||o>2100){uit.innerHTML='<p class="klein">'+esc(T.leeg)+'</p>';return}
+  if(j==null||j<1000||j>2100)j=o;
+  if(j<o){var t=o;o=j;j=t;let+='<p class="gc-let">'+esc(T.wisselen)+'</p>'}
+  if(ma<mi)ma=mi;
+  var b=o-mi, a=j-ma, bv=o-vm;
+  if(a>b)let+='<p class="gc-let">'+esc(f(T.teLang,{n:j-o,min:mi,max:ma}))+'</p>';
+  var botst=a>b, lo=Math.min(a,b), hi=Math.max(a,b), m=Math.round((lo+hi)/2), d=Math.ceil((hi-lo)/2);
+  var hoofd=botst?f(T.conflict,{a:a,b:b}):lo===hi?f(T.precies,{a:lo}):f(T.tussen,{a:lo,b:hi});
+  uit.innerHTML=let+
+    '<div class="rij"><span class="wie">'+esc(T.moeder)+'</span><div><span class="groot">'+esc(hoofd)+'</span>'+(lo===hi||botst?'':' <span class="klein">'+esc(f(T.midden,{m:m,d:d}))+'</span>')+
+    '<p class="uitleg">'+esc(f(T.uitlegB,{min:mi,o:o,b:b}))+' '+esc(f(T.uitlegA,{max:ma,j:j,a:a}))+'</p></div></div>'+
+    '<div class="rij"><span class="wie">'+esc(T.vader)+'</span><div><span class="groot">'+esc(f(T.vaderUit,{b:bv}))+'</span>'+
+    '<p class="uitleg">'+esc(f(T.uitlegV,{min:vm,o:o}))+'</p></div></div>'+(botst?'':lijn(o,j,lo,hi,bv));
+}
+var p=new URLSearchParams(location.hash.slice(1));
+if(p.get("oudste"))$("gc-oudste").value=p.get("oudste");
+if(p.get("jongste"))$("gc-jongste").value=p.get("jongste");
+["gc-oudste","gc-jongste","gc-mmin","gc-mmax","gc-vmin"].forEach(function(i){$(i).addEventListener("input",reken)});
+reken();
+})();</script>
+<footer class="voet"><div>Source: Bistumsarchiv Münster, via Matricula Online. This site contains no scans, only OCR text. <a href="https://github.com/gerritjan-bit/status-animarum-1749">GitHub</a> · <a href="../en/privacy.html">Privacy and cookies</a> · <a href="#" data-sa-instellingen>Cookie settings</a></div></footer>
+</body>
+</html>
