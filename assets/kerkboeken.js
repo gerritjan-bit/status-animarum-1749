@@ -420,6 +420,7 @@ ${spell ? `<details><summary>${esc(T.alleSpellingen)}</summary><ul class="kb-spe
   }
 
   /* ---------- gezinnen ---------- */
+  const HULP = {nl: "ouders schatten", de: "Eltern schätzen", en: "estimate parents"}[KB.taal] || "estimate parents";
   let GEZ = [], GZ = null;   // GZ: laatste zoekvraag met alle gevonden gezinnen; aan/uit zetten filtert lokaal
   async function zoekGezin() {
     await laad();
@@ -448,7 +449,7 @@ ${spell ? `<details><summary>${esc(T.alleSpellingen)}</summary><ul class="kb-spe
     $("gz-status").textContent = GEZ.length === 1 ? T.gezinEen : T.gezinAantal.replace("{n}", fmt(GEZ.length));
     $("gz-csv").hidden = !GEZ.length;
     $("gz-uitkomst").innerHTML = GEZ.length ? `<div class="tabel"><table><thead><tr><th>${esc(T.parochie)}</th><th>${esc(T.rollen.vader)}</th><th>${esc(T.rollen.moeder)}</th><th class="getal">${esc(T.kinderen)}</th><th>${esc(T.dopen)}</th></tr></thead><tbody>${
-      GEZ.map(([id, p, v, m, n, van, tot, k]) => `<tr><td>${esc(META.parochies[p])}</td><td>${esc(v)}</td><td>${esc(m)}</td><td class="getal">${n}</td><td>${
+      GEZ.map(([id, p, v, m, n, van, tot, k]) => `<tr><td>${esc(META.parochies[p])}</td><td>${esc(v)}</td><td>${esc(m)}</td><td class="getal">${n}${van ? `<br><a class="klein" href="${KB.basis}${KB.taal}/hulpmiddelen.html#oudste=${van}${tot && tot !== van ? "&jongste=" + tot : ""}" title="${esc(HULP)}">${esc(HULP)}</a>` : ""}</td><td>${
         JSON.parse(k).map(([j, kind, bk, pg]) => `<a href="${esc(scanLink(bk, pg))}" target="_blank" rel="noopener">${j || "?"}</a> ${esc(kind || "")}`).join("; ")}</td></tr>`).join("")}</tbody></table></div>` : "";
   }
   $("gz-namen") && $("gz-namen").addEventListener("click", e => {
